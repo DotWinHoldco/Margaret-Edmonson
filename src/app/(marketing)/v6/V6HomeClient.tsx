@@ -526,7 +526,8 @@ function CollectionsSection() {
 
       <motion.div
         ref={containerRef}
-        className="flex gap-6 px-6 md:px-12 cursor-grab active:cursor-grabbing"
+        className="flex gap-6 px-6 md:px-12 cursor-grab active:cursor-grabbing overflow-x-auto"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         drag="x"
         dragConstraints={{ left: dragConstraint, right: 0 }}
         dragElastic={0.1}
