@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import EditPageForm from './EditPageForm'
@@ -11,7 +11,7 @@ export default async function EditPagePage(props: {
   params: Promise<{ id: string }>
 }) {
   const { id } = await props.params
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   const { data: page, error } = await supabase
     .from('pages')

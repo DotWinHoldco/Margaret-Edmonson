@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminBlogPage() {
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
   const { data: posts } = await supabase
     .from('blog_posts')
     .select('id, title, slug, status, published_at, tags, created_at')

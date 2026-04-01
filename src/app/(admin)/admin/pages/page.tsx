@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AdminPagesPage() {
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
   const { data: pages, error } = await supabase
     .from('pages')
     .select('id, title, slug, updated_at')

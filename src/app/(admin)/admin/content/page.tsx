@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 import ContentEditor from './ContentEditor'
 
@@ -17,7 +17,7 @@ interface ContentRow {
 }
 
 export default async function AdminContentPage() {
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
   const { data: rows } = await supabase
     .from('site_content')
     .select('*')
