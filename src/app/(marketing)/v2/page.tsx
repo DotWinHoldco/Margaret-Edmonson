@@ -237,10 +237,10 @@ function HeroSection() {
               custom={3}
               className="font-friendly max-w-md text-base leading-relaxed text-[#1A1A1A]/70 md:text-lg"
             >
-              Every piece begins with a fragment of memory — a sun-bleached
-              photograph, a scrap of hand-written letter, a tide-worn shell.
-              Through mixed-media collage and oil painting, Margaret transforms
-              the ephemeral into art that moves you.
+              Watercolors, acrylics, and mixed media inspired by the Texas
+              countryside, Arizona desert, and Carolina coast. Margaret
+              documents the beauty she sees around her and brings it to life
+              through drawing, painting, and layered collage.
             </motion.p>
 
             <motion.div
@@ -476,11 +476,7 @@ function AboutSection() {
               custom={3}
               className="font-friendly text-base leading-relaxed text-[#1A1A1A]/70 md:text-lg"
             >
-              For over fifteen years, Margaret has turned salvaged ephemera into
-              vivid, layered art. Her studio — equal parts curiosity cabinet and
-              creative workshop — overflows with vintage postcards, pressed
-              wildflowers, hand-mixed pigments, and the kind of beautiful chaos
-              that makes great art inevitable.
+              What you will find in Margaret&apos;s artwork is the beauty of what she sees around her. She favors drawing and painting to express realism, using her camera as an initial sketch before pairing down and combining scenes by hand. Her subjects are drawn from her travels: cattle and wild sunflowers in Texas, the captivating saguaro cactuses of Arizona, and beach scenes from family vacations to Alabama and California.
             </motion.p>
 
             <motion.p
@@ -488,10 +484,7 @@ function AboutSection() {
               custom={4}
               className="font-friendly mt-4 text-base leading-relaxed text-[#1A1A1A]/70 md:text-lg"
             >
-              Each piece is a conversation between found materials and original
-              painting, between nostalgia and now. Whether it is a Texas
-              landscape collaged from century-old maps or a beach scene
-              embedded with real sea-glass, the work invites you to look closer.
+              Recently, Margaret has been experimenting with textures, printmaking, text, and even sewing to incorporate into mixed media collages. These explorations have awakened her curiosity, enjoyment, and play of making art — chiseling away at perfectionist tendencies to allow room for chance and surprises.
             </motion.p>
 
             <motion.div variants={fadeUp} custom={5} className="mt-10">
@@ -705,7 +698,7 @@ function CommissionSection() {
 const CLASSES = [
   {
     title: 'Mixed-Media Collage Workshop',
-    desc: 'Learn to layer found papers, vintage ephemera, and acrylic mediums into expressive, textured compositions. All levels welcome.',
+    desc: 'Learn to layer painted papers, book pages, and acrylic mediums into expressive, textured compositions. All levels welcome.',
     image: `${ART.encourage}/Arrival_2.jpg`,
     duration: '3 hours',
     tag: 'Most Popular',
