@@ -49,10 +49,23 @@ interface ProjectNote {
   updated_at: string
 }
 
+interface Funnel {
+  id: string
+  slug: string
+  template: string
+  is_published: boolean
+  views_count: number
+  add_to_cart_count: number
+  purchase_count: number
+  product_title: string
+  product_slug: string
+}
+
 interface Props {
   initialFeedback: FeedbackItem[]
   initialWorkRequests: WorkRequest[]
   initialNotes: ProjectNote[]
+  initialFunnels?: Funnel[]
 }
 
 // ─── Constants ────────────────────────────────────────────────────────
@@ -452,10 +465,17 @@ function CommentThread({
 }
 
 // ─── Main Component ───────────────────────────────────────────────────
+const TEMPLATE_LABELS: Record<string, { label: string; accent: string }> = {
+  gallery_spotlight: { label: 'Gallery Spotlight', accent: 'bg-charcoal' },
+  intimate_journal: { label: 'Intimate Journal', accent: 'bg-gold' },
+  bold_showcase: { label: 'Bold Showcase', accent: 'bg-coral' },
+}
+
 export default function ProjectHubClient({
   initialFeedback,
   initialWorkRequests,
   initialNotes,
+  initialFunnels = [],
 }: Props) {
   // ── State ───────────────────────────────────────────────────────────
   const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>(initialFeedback)
@@ -815,7 +835,112 @@ export default function ProjectHubClient({
         </div>
       </motion.section>
 
-      {/* ── Section 2b: PASTOR Sales Funnels ──────────────────────── */}
+      {/* ── Section 2b: Live Funnels ─────────────────────────────── */}
+      {initialFunnels.length > 0 && (
+        <motion.section
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12 }}
+          className="mb-16"
+        >
+          <SectionHeader
+            title="Your Sales Funnels"
+            subtitle={`${initialFunnels.length} funnel${initialFunnels.length !== 1 ? 's' : ''} created. Each is a dedicated landing page for selling a single artwork.`}
+          />
+          <div className="space-y-3">
+            {initialFunnels.map((funnel, i) => {
+              const tmpl = TEMPLATE_LABELS[funnel.template] || { label: funnel.template, accent: 'bg-charcoal' }
+              return (
+                <motion.div
+                  key={funnel.id}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.15 + i * 0.05 }}
+                  className="flex items-center gap-4 bg-white rounded-xl border border-charcoal/8 p-4 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  {/* Template accent */}
+                  <div className={`w-1.5 h-12 rounded-full ${tmpl.accent} flex-shrink-0`} />
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="font-display text-base font-semibold text-charcoal truncate">
+                        {funnel.product_title}
+                      </h3>
+                      {funnel.is_published ? (
+                        <span className="flex-shrink-0 px-2 py-0.5 bg-teal/10 text-teal text-[10px] font-body font-semibold uppercase tracking-wider rounded-full">
+                          Live
+                        </span>
+                      ) : (
+                        <span className="flex-shrink-0 px-2 py-0.5 bg-charcoal/5 text-charcoal/40 text-[10px] font-body font-semibold uppercase tracking-wider rounded-full">
+                          Draft
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 font-body text-xs text-charcoal/40">
+                      <span>{tmpl.label} template</span>
+                      <span>&middot;</span>
+                      <span>/art/{funnel.slug}</span>
+                    </div>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="hidden sm:flex items-center gap-4 text-center flex-shrink-0">
+                    <div>
+                      <p className="font-body text-sm font-semibold text-charcoal">{funnel.views_count}</p>
+                      <p className="font-body text-[10px] text-charcoal/40 uppercase tracking-wider">Views</p>
+                    </div>
+                    <div>
+                      <p className="font-body text-sm font-semibold text-teal">{funnel.add_to_cart_count}</p>
+                      <p className="font-body text-[10px] text-charcoal/40 uppercase tracking-wider">Carts</p>
+                    </div>
+                    <div>
+                      <p className="font-body text-sm font-semibold text-gold">{funnel.purchase_count}</p>
+                      <p className="font-body text-[10px] text-charcoal/40 uppercase tracking-wider">Sales</p>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {funnel.is_published && (
+                      <a
+                        href={`/art/${funnel.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 rounded-lg bg-teal/8 px-3 py-2 font-body text-xs font-medium text-teal hover:bg-teal/15 transition-colors"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                        View
+                      </a>
+                    )}
+                    <Link
+                      href={`/admin/funnels/${funnel.id}`}
+                      className="inline-flex items-center gap-1 rounded-lg bg-charcoal/5 px-3 py-2 font-body text-xs font-medium text-charcoal/60 hover:bg-charcoal/10 transition-colors"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+          <div className="mt-4">
+            <Link
+              href="/admin/funnels/new"
+              className="inline-flex items-center gap-2 rounded-lg bg-gold/10 px-4 py-2.5 font-body text-sm font-medium text-gold hover:bg-gold/20 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Create New Funnel
+            </Link>
+          </div>
+        </motion.section>
+      )}
+
+      {/* ── Section 2c: PASTOR Sales Funnels ──────────────────────── */}
       <motion.section
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
