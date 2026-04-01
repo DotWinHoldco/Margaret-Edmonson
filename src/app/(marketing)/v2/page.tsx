@@ -26,17 +26,13 @@ const META = {
 }
 
 /* ─── artwork paths ─── */
+const ART_BASE = '/Margaret Edmondson/ARTWORK'
 const ART = {
-  beach: (n: number) =>
-    `/Margaret Edmondson/ARTWORK/Beach and SC/image${n}.jpg`,
-  cactus: (n: number) =>
-    `/Margaret Edmondson/ARTWORK/Cactuses/image${n}.jpg`,
-  portrait: (n: number) =>
-    `/Margaret Edmondson/ARTWORK/Custom Portrait Options/image${n}.jpg`,
-  encourage: (n: number, ext = 'jpg') =>
-    `/Margaret Edmondson/ARTWORK/Encouragement Series/image${n}.${ext}`,
-  texas: (n: number) =>
-    `/Margaret Edmondson/ARTWORK/Texas Themed/image${n}.jpg`,
+  beach: `${ART_BASE}/Beach and SC`,
+  cactus: `${ART_BASE}/Cactuses`,
+  portrait: `${ART_BASE}/Custom Portrait Options`,
+  encourage: `${ART_BASE}/Encouragement Series`,
+  texas: `${ART_BASE}/Texas Themed`,
 }
 
 /* ─── reusable animation variants ─── */
@@ -175,8 +171,8 @@ function HeroSection() {
           animate="visible"
         >
           <Image
-            src={ART.beach(3)}
-            alt="Mixed-media beach collage artwork by Margaret Edmondson"
+            src={`${ART.beach}/Dolphin Watch.jpg`}
+            alt="Dolphin Watch — mixed-media beach artwork by Margaret Edmondson"
             fill
             priority
             className="object-cover"
@@ -314,32 +310,32 @@ function HeroSection() {
    ═══════════════════════════════════════════════ */
 const FEATURED = [
   {
-    src: ART.encourage(1),
-    title: 'Boundless Joy',
+    src: `${ART.encourage}/Encouragement Series Overview_1.jpg`,
+    title: 'Encouragement Series Overview',
     series: 'Encouragement Series',
     price: '$285',
     span: 'md:col-span-2 md:row-span-2',
     aspect: 'aspect-[3/4]',
   },
   {
-    src: ART.texas(2),
-    title: 'Lone Star Sunset',
+    src: `${ART.texas}/Deep in the Heart of Texas_2.jpg`,
+    title: 'Deep in the Heart of Texas',
     series: 'Texas Themed',
     price: '$195',
     span: '',
     aspect: 'aspect-square',
   },
   {
-    src: ART.cactus(4),
-    title: 'Desert Bloom',
+    src: `${ART.cactus}/Hot Air_1.jpg`,
+    title: 'Hot Air',
     series: 'Cactus Collection',
     price: '$225',
     span: '',
     aspect: 'aspect-square',
   },
   {
-    src: ART.beach(7),
-    title: 'Coastal Memory',
+    src: `${ART.beach}/Magnolia Plantation and Gardens SC.jpg`,
+    title: 'Magnolia Plantation and Gardens SC',
     series: 'Beach & SC',
     price: '$310',
     span: 'md:col-span-2',
@@ -520,8 +516,8 @@ function AboutSection() {
               {/* main image */}
               <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
                 <Image
-                  src={ART.portrait(1)}
-                  alt="Margaret Edmondson in her studio"
+                  src={`${ART.portrait}/Custom House Portrait Example_1.jpg`}
+                  alt="Custom House Portrait Example by Margaret Edmondson"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 55vw"
@@ -538,8 +534,8 @@ function AboutSection() {
               >
                 <div className="relative aspect-square overflow-hidden rounded-sm border-4 border-white">
                   <Image
-                    src={ART.encourage(6)}
-                    alt="Close-up of mixed-media art detail"
+                    src={`${ART.encourage}/Grow.png`}
+                    alt="Grow — Encouragement Series artwork"
                     fill
                     className="object-cover"
                     sizes="200px"
@@ -710,21 +706,21 @@ const CLASSES = [
   {
     title: 'Mixed-Media Collage Workshop',
     desc: 'Learn to layer found papers, vintage ephemera, and acrylic mediums into expressive, textured compositions. All levels welcome.',
-    image: ART.encourage(2),
+    image: `${ART.encourage}/Arrival_2.jpg`,
     duration: '3 hours',
     tag: 'Most Popular',
   },
   {
     title: 'Oil Painting Fundamentals',
     desc: 'From palette mixing to bold brushwork — build confidence on canvas with guided exercises and personal critique.',
-    image: ART.texas(5),
+    image: `${ART.texas}/Flower Power_1.jpg`,
     duration: '4 hours',
     tag: 'New',
   },
   {
     title: 'Private Studio Session',
     desc: 'One-on-one mentorship tailored to your medium and goals. Perfect for developing a personal style or building a portfolio.',
-    image: ART.cactus(2),
+    image: `${ART.cactus}/Solo.jpg`,
     duration: '2 hours',
     tag: 'Exclusive',
   },

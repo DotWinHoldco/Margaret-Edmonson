@@ -156,7 +156,7 @@ function HeroSection() {
           className="absolute inset-[-30px]"
         >
           <Image
-            src="/Margaret Edmondson/ARTWORK/Beach and SC/image3.jpg"
+            src="/Margaret Edmondson/ARTWORK/Beach and SC/Dolphin Watch.jpg"
             alt="Mixed media artwork by Margaret Edmondson"
             fill
             className="object-cover scale-110"
@@ -199,8 +199,8 @@ function HeroSection() {
       >
         <StampFrame>
           <Image
-            src="/Margaret Edmondson/ARTWORK/Cactuses/image2.jpg"
-            alt="Cactus artwork"
+            src="/Margaret Edmondson/ARTWORK/Cactuses/Hot Air_1.jpg"
+            alt="Hot Air cactus artwork"
             width={160}
             height={200}
             className="object-cover w-full h-auto"
@@ -221,8 +221,8 @@ function HeroSection() {
       >
         <StampFrame>
           <Image
-            src="/Margaret Edmondson/ARTWORK/Encouragement Series/image1.jpg"
-            alt="Encouragement series art"
+            src="/Margaret Edmondson/ARTWORK/Encouragement Series/Curious Mind.png"
+            alt="Curious Mind encouragement series art"
             width={140}
             height={180}
             className="object-cover w-full h-auto"
@@ -335,43 +335,43 @@ function HeroSection() {
    ──────────────────────────────────────────────────────────── */
 const featuredWorks = [
   {
-    src: '/Margaret Edmondson/ARTWORK/Beach and SC/image1.jpg',
-    title: 'Coastal Fragments',
+    src: '/Margaret Edmondson/ARTWORK/Beach and SC/Seaside with Seagull_1.jpg',
+    title: 'Seaside with Seagull',
     medium: 'Mixed media on canvas',
     size: 'large',
     rotate: '-1.5deg',
   },
   {
-    src: '/Margaret Edmondson/ARTWORK/Cactuses/image4.jpg',
-    title: 'Desert Bloom',
+    src: '/Margaret Edmondson/ARTWORK/Cactuses/Pins and Needles.jpg',
+    title: 'Pins and Needles',
     medium: 'Collage & acrylic',
     size: 'small',
     rotate: '2deg',
   },
   {
-    src: '/Margaret Edmondson/ARTWORK/Texas Themed/image5.jpg',
-    title: 'Lone Star Layers',
+    src: '/Margaret Edmondson/ARTWORK/Texas Themed/Deep in the Heart of Texas_1.jpg',
+    title: 'Deep in the Heart of Texas',
     medium: 'Found materials on board',
     size: 'medium',
     rotate: '-0.8deg',
   },
   {
-    src: '/Margaret Edmondson/ARTWORK/Encouragement Series/image6.jpg',
-    title: 'Words That Hold',
+    src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Grow.png',
+    title: 'Grow',
     medium: 'Mixed media collage',
     size: 'medium',
     rotate: '1.5deg',
   },
   {
-    src: '/Margaret Edmondson/ARTWORK/Beach and SC/image7.jpg',
-    title: 'Tidal Memory',
+    src: '/Margaret Edmondson/ARTWORK/Beach and SC/Magnolia Plantation and Gardens SC.jpg',
+    title: 'Magnolia Plantation and Gardens SC',
     medium: 'Oil & collage',
     size: 'small',
     rotate: '-2deg',
   },
   {
-    src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/image3.jpg',
-    title: 'Familiar Faces',
+    src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/Custom Pet Portrait Example_1.jpg',
+    title: 'Custom Pet Portrait',
     medium: 'Custom portrait commission',
     size: 'large',
     rotate: '1deg',
@@ -526,8 +526,8 @@ function AboutSection() {
             >
               <StampFrame>
                 <Image
-                  src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/image1.jpg"
-                  alt="Margaret in her studio"
+                  src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/Custom House Portrait Example_1.jpg"
+                  alt="Custom house portrait example"
                   width={400}
                   height={500}
                   className="object-cover w-full h-auto"
@@ -544,8 +544,8 @@ function AboutSection() {
             >
               <div className="bg-white p-2 shadow-xl">
                 <Image
-                  src="/Margaret Edmondson/ARTWORK/Encouragement Series/image2.jpg"
-                  alt="Art studio detail"
+                  src="/Margaret Edmondson/ARTWORK/Encouragement Series/Encouragement Series Overview_1.jpg"
+                  alt="Encouragement Series overview"
                   width={350}
                   height={350}
                   className="object-cover w-full h-auto"
@@ -647,7 +647,7 @@ function CommissionSection() {
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
       >
         <Image
-          src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/image5.jpg"
+          src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/Stylized Color Portrait Example.jpg"
           alt="Commission example"
           width={220}
           height={280}
@@ -666,7 +666,7 @@ function CommissionSection() {
         }}
       >
         <Image
-          src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/image7.jpg"
+          src="/Margaret Edmondson/ARTWORK/Custom Portrait Options/Family Gift Painting.jpg"
           alt="Commission example"
           width={180}
           height={220}
@@ -740,7 +740,7 @@ const classes = [
     description:
       'Learn the foundations of collage, layering, and texture-building. Perfect for beginners who want to get their hands messy with found materials.',
     schedule: 'Saturdays, 10 AM - 1 PM',
-    image: '/Margaret Edmondson/ARTWORK/Encouragement Series/image10.jpg',
+    image: '/Margaret Edmondson/ARTWORK/Encouragement Series/Seeds.png',
     accent: 'bg-coral',
   },
   {
@@ -748,7 +748,7 @@ const classes = [
     description:
       'A deep dive into composition, color theory through collage, and developing your personal visual language. Three days of creative immersion.',
     schedule: 'Weekend Workshop',
-    image: '/Margaret Edmondson/ARTWORK/Cactuses/image6.jpg',
+    image: '/Margaret Edmondson/ARTWORK/Cactuses/Solo.jpg',
     accent: 'bg-deep-teal',
   },
   {
@@ -756,7 +756,7 @@ const classes = [
     description:
       'From underpainting to glazing, explore classical and contemporary oil techniques. All levels welcome -- bring your own subject or paint from our still life.',
     schedule: 'Tuesdays, 6 - 9 PM',
-    image: '/Margaret Edmondson/ARTWORK/Beach and SC/image9.jpg',
+    image: '/Margaret Edmondson/ARTWORK/Beach and SC/Sweet Home Alabama.jpg',
     accent: 'bg-olive',
   },
 ]
