@@ -64,39 +64,13 @@ function SectionWrapper({
   )
 }
 
-/* ─── torn edge SVG for bottom dividers ─── */
-function TornEdgeBottom({ fill = '#FBF8F3' }: { fill?: string }) {
-  return (
-    <div className="relative w-full -mb-px" style={{ marginTop: '-1px' }}>
-      <svg
-        viewBox="0 0 1200 24"
-        preserveAspectRatio="none"
-        className="w-full h-5 md:h-6 block"
-      >
-        <path
-          d="M0,0 Q25,18 60,8 T120,16 T180,4 T240,14 T300,6 T360,18 T420,4 T480,12 T540,6 T600,18 T660,4 T720,14 T780,8 T840,18 T900,4 T960,16 T1020,6 T1080,14 T1140,8 T1200,12 V24 H0Z"
-          fill={fill}
-        />
-      </svg>
-    </div>
-  )
+/* ─── torn edge dividers removed per design feedback ─── */
+function TornEdgeBottom({ fill: _fill = '#FBF8F3' }: { fill?: string }) {
+  return null
 }
 
-function TornEdgeTop({ fill = '#FBF8F3' }: { fill?: string }) {
-  return (
-    <div className="relative w-full -mt-px" style={{ marginBottom: '-1px' }}>
-      <svg
-        viewBox="0 0 1200 24"
-        preserveAspectRatio="none"
-        className="w-full h-5 md:h-6 block rotate-180"
-      >
-        <path
-          d="M0,0 Q25,18 60,8 T120,16 T180,4 T240,14 T300,6 T360,18 T420,4 T480,12 T540,6 T600,18 T660,4 T720,14 T780,8 T840,18 T900,4 T960,16 T1020,6 T1080,14 T1140,8 T1200,12 V24 H0Z"
-          fill={fill}
-        />
-      </svg>
-    </div>
-  )
+function TornEdgeTop({ fill: _fill = '#FBF8F3' }: { fill?: string }) {
+  return null
 }
 
 /* ─── washi tape accent ─── */
@@ -263,12 +237,14 @@ function HeroSection() {
         style={{ y: textY }}
       >
         <motion.p
-          className="font-hand text-gold text-lg md:text-2xl mb-4 tracking-wide"
+          className="font-hand text-lg md:text-2xl mb-4 tracking-wide inline-block"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          The mixed-media world of Margaret Edmondson
+          <span className="bg-gold/80 text-charcoal px-3 py-1 rounded-sm">
+            The mixed-media world of Margaret Edmondson
+          </span>
         </motion.p>
 
         <motion.h1
