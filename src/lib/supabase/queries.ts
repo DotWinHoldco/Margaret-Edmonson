@@ -202,3 +202,65 @@ export async function getCourseModules(courseId: string) {
 
   return data || []
 }
+
+export async function getCourseWithModulesAndLessons(courseId: string) {
+  const supabase = await createClient()
+  const { data: course } = await supabase
+    .from('courses')
+    .select('*')
+    .eq('id', courseId)
+    .single()
+
+  if (!course) return null
+
+  const { data: modules } = await supabase
+    .from('course_modules')
+    .select('*, lessons(*)')
+    .eq('course_id', courseId)
+    .order('sort_order', { ascending: true })
+
+  return {
+    ...course,
+    modules: (modules || []).map((mod) => ({
+      ...mod,
+      lessons: (mod.lessons || []).sort(
+        (a: { sort_order: number }, b: { sort_order: number }) =>
+          a.sort_order - b.sort_order
+      ),
+    })),
+  }
+}
+
+export async function getEnrollment(profileId: string, courseId: string) {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('enrollments')
+    .select('*')
+    .eq('profile_id', profileId)
+    .eq('course_id', courseId)
+    .maybeSingle()
+
+  return data
+}
+
+export async function getLessonProgress(enrollmentId: string) {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('lesson_progress')
+    .select('*')
+    .eq('enrollment_id', enrollmentId)
+
+  return data || []
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .single()
+
+  return data
+}

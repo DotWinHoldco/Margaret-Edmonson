@@ -1,6 +1,7 @@
 import { getStripe } from '@/lib/stripe'
 import { createServiceClient } from '@/lib/supabase/server'
 import { sendServerEvent, hashSHA256 } from '@/lib/meta/capi'
+import { routeOrderToFulfillment } from '@/lib/fulfillment/router'
 import { headers } from 'next/headers'
 
 export async function POST(request: Request) {
@@ -35,9 +36,27 @@ export async function POST(request: Request) {
         id: string
         payment_intent: string
         customer_email: string
-        metadata: { cart_id?: string; items_json?: string }
+        metadata: { cart_id?: string; items_json?: string; course_id?: string; profile_id?: string }
         shipping_details?: { address: Record<string, string> }
         amount_total: number
+      }
+
+      // Handle course enrollment checkout
+      if (session.metadata.course_id && session.metadata.profile_id) {
+        const { error: enrollError } = await supabase
+          .from('enrollments')
+          .insert({
+            profile_id: session.metadata.profile_id,
+            course_id: session.metadata.course_id,
+            status: 'active',
+            stripe_checkout_session_id: session.id,
+          })
+
+        if (enrollError) {
+          console.error('Course enrollment error:', enrollError)
+        }
+
+        break
       }
 
       const items = session.metadata.items_json ? JSON.parse(session.metadata.items_json) : []
@@ -117,6 +136,14 @@ export async function POST(request: Request) {
           },
           event_source_url: `${process.env.NEXT_PUBLIC_SITE_URL}/order/${session.id}`,
         })
+
+        // Route to fulfillment providers
+        try {
+          await routeOrderToFulfillment(order.id)
+        } catch (err) {
+          console.error('Fulfillment routing failed (will retry):', err)
+          // Don't fail the webhook — fulfillment can be retried
+        }
       }
 
       break
