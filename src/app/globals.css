@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* === Brand Colors === */
+  --cream: #FAF7F2;
+  --charcoal: #2C2C2C;
+  --teal: #3A7D7B;
+  --gold: #C9A84C;
+  --coral: #D4654A;
+  --deep-teal: #2A5E5C;
+  --olive: #6B7F3B;
+
+  /* === V1: Gallery Immersion === */
+  --v1-bg: #FAF7F2;
+  --v1-text: #2C2C2C;
+  --v1-accent: #3A7D7B;
+  --v1-gold: #C9A84C;
+
+  /* === V2: Studio Energy === */
+  --v2-bg: #F5F0EB;
+  --v2-text: #1A1A1A;
+  --v2-accent: #D4654A;
+  --v2-dark: #1A1A1A;
+
+  /* === V3: Immersive Collage === */
+  --v3-bg: #FBF8F3;
+  --v3-teal: #2A5E5C;
+  --v3-coral: #D4654A;
+  --v3-gold: #C9A84C;
+  --v3-olive: #6B7F3B;
+
+  --background: var(--cream);
+  --foreground: var(--charcoal);
 }
 
 @theme inline {
+  --color-cream: var(--cream);
+  --color-charcoal: var(--charcoal);
+  --color-teal: var(--teal);
+  --color-gold: var(--gold);
+  --color-coral: var(--coral);
+  --color-deep-teal: var(--deep-teal);
+  --color-olive: var(--olive);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-source-sans);
+  --font-hand: var(--font-caveat);
+  --font-editorial: var(--font-playfair);
+  --font-friendly: var(--font-nunito);
+  --font-serif-display: var(--font-dm-serif);
+  --font-serif-body: var(--font-lora);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* === Paper/Canvas Texture (V1) === */
+.texture-paper {
+  position: relative;
+}
+.texture-paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* === Torn Paper Edge (V3) === */
+.torn-edge-top {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 20'%3E%3Cpath d='M0,20 Q30,5 60,15 T120,10 T180,18 T240,8 T300,16 T360,6 T420,14 T480,10 T540,18 T600,5 T660,15 T720,8 T780,16 T840,12 T900,18 T960,6 T1020,14 T1080,10 T1140,16 T1200,8 V20Z' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 20'%3E%3Cpath d='M0,20 Q30,5 60,15 T120,10 T180,18 T240,8 T300,16 T360,6 T420,14 T480,10 T540,18 T600,5 T660,15 T720,8 T780,16 T840,12 T900,18 T960,6 T1020,14 T1080,10 T1140,16 T1200,8 V20Z' fill='black'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
+}
+
+/* === Stitching Border (V3) === */
+.stitch-border {
+  border: 2px dashed var(--gold);
+  border-spacing: 4px;
+}
+
+/* === Smooth Scrolling === */
+html {
+  scroll-behavior: smooth;
+}
+
+/* === Selection Color === */
+::selection {
+  background-color: var(--gold);
+  color: var(--charcoal);
 }

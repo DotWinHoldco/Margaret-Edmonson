@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/abandoned-cart",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/email-automations",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/meta-event-sync",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
