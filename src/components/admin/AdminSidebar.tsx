@@ -168,7 +168,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
             <span className="font-display text-lg font-bold text-cream">A</span>
           </div>
           <div>
-            <p className="font-display text-lg font-semibold text-cream leading-tight">ArtByMe</p>
+            <p className="font-display text-lg font-semibold text-cream leading-tight">ArtByME</p>
             <p className="text-xs text-cream/40 font-body">Admin Panel</p>
           </div>
         </div>
