@@ -643,7 +643,7 @@ function CommissionSection() {
               </svg>
             </a>
             <a
-              href="/gallery?collection=commissions"
+              href="/commissions"
               className="font-friendly text-sm font-semibold uppercase tracking-widest text-white/50 underline decoration-white/20 decoration-1 underline-offset-4 transition-colors hover:text-white hover:decoration-white/60"
             >
               See Past Commissions

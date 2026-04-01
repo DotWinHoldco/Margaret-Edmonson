@@ -297,6 +297,24 @@ const FEATURES_DATA = [
     ],
   },
   {
+    title: 'PASTOR Sales Funnels',
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+      </svg>
+    ),
+    items: [
+      '3 PASTOR sales funnel templates (Gallery Spotlight, Intimate Journal, Bold Showcase)',
+      'Dedicated single-artwork landing pages at /art/[slug]',
+      'Full PASTOR copywriting framework: Problem → Amplify → Story → Transformation → Offer → Risk Reversal',
+      'Cart integration with variant selection on funnel pages',
+      'Admin funnel builder: create, edit, publish funnels per artwork',
+      'Analytics per funnel: views, add-to-cart, purchases',
+      'SEO-optimized with custom OG images per funnel',
+      'Ken Burns hero animations, parallax, scroll reveals',
+    ],
+  },
+  {
     title: 'Design & Frontend',
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -794,6 +812,85 @@ export default function ProjectHubClient({
               </div>
             </motion.div>
           ))}
+        </div>
+      </motion.section>
+
+      {/* ── Section 2b: PASTOR Sales Funnels ──────────────────────── */}
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="mb-16"
+      >
+        <SectionHeader
+          title="PASTOR Sales Funnels"
+          subtitle="Dedicated single-artwork landing pages using the PASTOR copywriting framework. Each funnel tells a complete story from problem to purchase."
+        />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+          {[
+            {
+              name: 'Gallery Spotlight',
+              description: 'Cinematic, dark, immersive. Full-screen artwork with dramatic lighting, parallax effects, and Ken Burns hero animation. Best for large, striking pieces.',
+              accent: 'bg-charcoal',
+              textColor: 'text-charcoal',
+            },
+            {
+              name: 'Intimate Journal',
+              description: 'Warm, editorial, journal-like. Feels like reading an artist\'s letter. Torn-paper textures, handwritten accents, generous typography. Best for pieces with rich stories.',
+              accent: 'bg-gold',
+              textColor: 'text-gold',
+            },
+            {
+              name: 'Bold Showcase',
+              description: 'High-energy, vibrant, contemporary. Bold typography, color blocking from the artwork, fast-paced. Best for colorful, dynamic pieces.',
+              accent: 'bg-coral',
+              textColor: 'text-coral',
+            },
+          ].map((template, i) => (
+            <motion.div
+              key={template.name}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 + i * 0.06 }}
+              className="bg-white rounded-xl border border-charcoal/8 overflow-hidden shadow-sm"
+            >
+              <div className={`h-2 ${template.accent}`} />
+              <div className="p-5">
+                <h3 className={`font-display text-lg font-semibold ${template.textColor} mb-2`}>
+                  {template.name}
+                </h3>
+                <p className="font-body text-sm text-charcoal/50 leading-relaxed mb-4">
+                  {template.description}
+                </p>
+                <div className="flex items-center gap-2 text-xs font-body text-charcoal/40">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 1 8.835 2.535M10.34 6.66a23.847 23.847 0 0 0 8.835-2.535m0 0A23.74 23.74 0 0 0 18.795 3m.38 1.125a23.91 23.91 0 0 1 1.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 0 0 1.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 0 1 0 3.46" />
+                  </svg>
+                  PASTOR: Problem → Amplify → Story → Transformation → Offer → Risk Reversal
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/funnels"
+            className="inline-flex items-center gap-2 rounded-lg bg-teal px-4 py-2.5 font-body text-sm font-medium text-cream hover:bg-deep-teal transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+            </svg>
+            Manage Funnels
+          </Link>
+          <Link
+            href="/admin/funnels/new"
+            className="inline-flex items-center gap-2 rounded-lg bg-gold/10 px-4 py-2.5 font-body text-sm font-medium text-gold hover:bg-gold/20 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Create New Funnel
+          </Link>
         </div>
       </motion.section>
 

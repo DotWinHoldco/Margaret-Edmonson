@@ -720,7 +720,7 @@ function CommissionSection() {
             Start Your Commission
           </a>
           <a
-            href="/gallery/commissions"
+            href="/commissions"
             className="inline-block px-10 py-4 border-2 border-white/30 text-white font-serif-display text-lg tracking-wide hover:border-gold hover:text-gold transition-colors duration-300"
           >
             View Past Work
