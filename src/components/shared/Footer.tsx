@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const FOOTER_LINKS = {
   Shop: [
@@ -32,7 +33,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-4 lg:mb-0">
             <Link href="/" className="inline-block">
-              <span className="font-display text-2xl font-semibold text-white">ArtByMe</span>
+              <Image
+                src="/logo.png"
+                alt="ArtByMe"
+                width={40}
+                height={48}
+                className="h-10 w-auto invert"
+              />
             </Link>
             <p className="mt-3 text-sm font-body text-white/60 max-w-xs">
               Mixed media, painting &amp; collage by Margaret Edmondson. Original artwork, prints, and art classes.

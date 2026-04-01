@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useCart } from '@/lib/cart/context'
 
@@ -24,9 +25,14 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="font-display text-2xl font-semibold tracking-tight text-charcoal lg:text-3xl">
-              ArtByMe
-            </span>
+            <Image
+              src="/logo.png"
+              alt="ArtByMe"
+              width={40}
+              height={48}
+              className="h-10 w-auto lg:h-12"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
