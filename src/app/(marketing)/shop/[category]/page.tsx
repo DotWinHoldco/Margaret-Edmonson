@@ -1,8 +1,8 @@
 import { getProductsByCategory, getCategories } from '@/lib/supabase/queries'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
+import ProductCard from '@/components/shop/ProductCard'
 
 export async function generateMetadata(
   props: { params: Promise<{ category: string }> }
@@ -81,18 +81,15 @@ export default async function CategoryPage(
             const primaryImage = (product.product_images as Array<{ url: string; alt_text: string | null; is_primary: boolean }>)?.find((img) => img.is_primary) || (product.product_images as Array<{ url: string; alt_text: string | null }>)?.[0]
             return (
               <Link key={product.id} href={`/shop/art/${product.slug}`} className="group block">
-                <div className="relative aspect-[4/5] overflow-hidden bg-charcoal/5 rounded-sm">
+                <div className="relative">
                   {primaryImage && (
-                    <Image
+                    <ProductCard
                       src={primaryImage.url}
                       alt={primaryImage.alt_text || product.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   )}
                   {product.is_original && (
-                    <span className="absolute top-3 left-3 px-2 py-0.5 bg-gold/90 text-white text-[10px] font-body font-semibold uppercase tracking-wider rounded-sm">
+                    <span className="absolute top-3 left-3 px-2 py-0.5 bg-gold/90 text-white text-[10px] font-body font-semibold uppercase tracking-wider rounded-sm z-10">
                       Original
                     </span>
                   )}

@@ -7,6 +7,7 @@ import { motion, useInView } from 'framer-motion'
 import type { Easing } from 'framer-motion'
 import { useCart } from '@/lib/cart/context'
 import { CHEAPEST_PRINT_PRICE } from '@/lib/pricing/canvas-prints'
+import AdaptiveArtwork from '@/components/shared/AdaptiveArtwork'
 import type { FunnelTemplateProps } from './types'
 
 const ease: Easing = [0.22, 1, 0.36, 1]
@@ -372,12 +373,8 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
             {/* Detail image with gold frame on container border */}
             {detailImage && (
               <Pop delay={0.1}>
-                <div className="relative md:h-full group border-[3px] border-gold/70 overflow-hidden bg-charcoal flex items-center justify-center min-h-[500px]">
-                  <img
-                    src={detailImage.url}
-                    alt="Artwork detail"
-                    className="w-full h-auto max-h-[70vh] object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-                  />
+                <div className="relative md:h-full group border-[3px] border-gold/70 overflow-hidden min-h-[500px]">
+                  <AdaptiveArtwork src={detailImage.url} alt="Artwork detail" mode="morph" maxHeight="70vh" padding="6px" />
                 </div>
               </Pop>
             )}
@@ -434,16 +431,8 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
                   {/* Frame shadow */}
                   <div className="absolute -inset-4 shadow-[8px_12px_40px_rgba(0,0,0,0.25),_-2px_-2px_20px_rgba(255,255,255,0.3)] bg-charcoal/5 rounded-sm" />
                   {/* Gold frame flush on container edge */}
-                  <div className="relative border-[4px] border-gold/60 overflow-hidden">
-                    <div className="relative w-[280px] h-[350px] sm:w-[360px] sm:h-[450px] md:w-[440px] md:h-[550px] bg-white flex items-center justify-center">
-                      <Image
-                        src={heroImage.url}
-                        alt={product.title}
-                        fill
-                        className="object-contain"
-                        sizes="440px"
-                      />
-                    </div>
+                  <div className="relative border-[4px] border-gold/60 overflow-hidden max-w-[440px]">
+                    <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="morph" maxHeight="550px" padding="6px" />
                   </div>
                 </div>
               </div>
@@ -472,13 +461,9 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={spring}
-                  className="relative rounded-sm overflow-hidden shadow-2xl bg-cream flex items-center justify-center"
+                  className="relative rounded-sm overflow-hidden shadow-2xl"
                 >
-                  <img
-                    src={heroImage.url}
-                    alt={product.title}
-                    className="w-full h-auto max-h-[70vh] object-contain"
-                  />
+                  <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="morph" maxHeight="70vh" />
                 </motion.div>
               </Pop>
             )}

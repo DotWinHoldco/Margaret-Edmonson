@@ -1,9 +1,9 @@
 import { getProducts, getCategories } from '@/lib/supabase/queries'
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getProductBadge } from '@/lib/product-utils'
 import { CHEAPEST_PRINT_PRICE } from '@/lib/pricing/canvas-prints'
+import ProductCard from '@/components/shop/ProductCard'
 
 export const metadata: Metadata = {
   title: 'Shop',
@@ -46,14 +46,11 @@ export default async function ShopPage() {
             const primaryImage = (product.product_images as Array<{url: string; alt_text: string | null; is_primary: boolean}>)?.find((img) => img.is_primary) || (product.product_images as Array<{url: string; alt_text: string | null}>)?.[0]
             return (
               <Link key={product.id} href={`/shop/art/${product.slug}`} className="group block">
-                <div className="relative aspect-[4/5] overflow-hidden bg-charcoal/5 rounded-sm">
+                <div className="relative">
                   {primaryImage && (
-                    <Image
+                    <ProductCard
                       src={primaryImage.url}
                       alt={primaryImage.alt_text || product.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   )}
                   {(() => {

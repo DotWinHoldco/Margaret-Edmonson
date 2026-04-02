@@ -1,9 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import AdaptiveArtwork from '@/components/shared/AdaptiveArtwork'
 
 interface Product {
   id: string
@@ -62,17 +62,15 @@ export default function GalleryGrid({ products }: { products: Product[] }) {
               className="break-inside-avoid"
             >
               <Link href={`/shop/art/${product.slug}`} className="group block">
-                <div className="relative overflow-hidden bg-charcoal/5 rounded-sm">
-                  <Image
+                <div className="relative overflow-hidden rounded-sm">
+                  <AdaptiveArtwork
                     src={primaryImage.url}
                     alt={primaryImage.alt_text || product.title}
-                    width={600}
-                    height={750}
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    mode="morph"
+                    imageClassName="transition-transform duration-700 group-hover:scale-105"
                   />
                   {product.is_original && (
-                    <span className="absolute top-3 left-3 px-2 py-0.5 bg-gold/90 text-white text-[10px] font-body font-semibold uppercase tracking-wider rounded-sm">
+                    <span className="absolute top-3 left-3 px-2 py-0.5 bg-gold/90 text-white text-[10px] font-body font-semibold uppercase tracking-wider rounded-sm z-10">
                       Original
                     </span>
                   )}

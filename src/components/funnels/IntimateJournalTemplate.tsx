@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import type { Easing } from 'framer-motion'
 import { useCart } from '@/lib/cart/context'
+import AdaptiveArtwork from '@/components/shared/AdaptiveArtwork'
 import type { FunnelTemplateProps } from './types'
 
 const ease: Easing = [0.22, 1, 0.36, 1]
@@ -191,12 +192,8 @@ export default function IntimateJournalTemplate({ funnel, product, images, varia
             </div>
             {detailImage && (
               <ImageSlide delay={0.2} className="hidden md:block">
-                <div className="relative rounded-sm overflow-hidden shadow-lg bg-[#F8F4EE] flex items-center justify-center">
-                  <img
-                    src={detailImage.url}
-                    alt="Detail"
-                    className="w-full h-auto max-h-[60vh] object-contain"
-                  />
+                <div className="relative rounded-sm overflow-hidden shadow-lg">
+                  <AdaptiveArtwork src={detailImage.url} alt="Detail" mode="morph" maxHeight="60vh" />
                 </div>
                 <p className="font-hand text-sm text-charcoal/40 mt-3 text-center -rotate-1">detail</p>
               </ImageSlide>
@@ -211,13 +208,9 @@ export default function IntimateJournalTemplate({ funnel, product, images, varia
           {/* Full-width artwork image with parallax */}
           {heroImage && (
             <Reveal>
-              <div ref={fullImageRef} className="relative w-full rounded-sm overflow-hidden shadow-2xl mb-16 bg-cream flex items-center justify-center">
+              <div ref={fullImageRef} className="relative w-full rounded-sm overflow-hidden shadow-2xl mb-16">
                 <motion.div style={{ y: imageY }} className="relative w-full">
-                  <img
-                    src={heroImage.url}
-                    alt={product.title}
-                    className="w-full h-auto max-h-[70vh] object-contain"
-                  />
+                  <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="morph" maxHeight="70vh" />
                 </motion.div>
               </div>
             </Reveal>
@@ -245,12 +238,8 @@ export default function IntimateJournalTemplate({ funnel, product, images, varia
           <div className="grid md:grid-cols-2 gap-8 mt-16 max-w-4xl mx-auto">
             {images.slice(1, 3).map((img, i) => (
               <ImageSlide key={img.id} delay={i * 0.1}>
-                <div className="relative rounded-sm overflow-hidden shadow-lg bg-cream flex items-center justify-center">
-                  <img
-                    src={img.url}
-                    alt={img.alt_text || 'Artwork detail'}
-                    className="w-full h-auto max-h-[60vh] object-contain"
-                  />
+                <div className="relative rounded-sm overflow-hidden shadow-lg">
+                  <AdaptiveArtwork src={img.url} alt={img.alt_text || 'Artwork detail'} mode="morph" maxHeight="60vh" />
                 </div>
                 <p className="font-hand text-sm text-charcoal/40 mt-3 text-center -rotate-1">
                   {img.alt_text || `Detail of "${product.title}"`}

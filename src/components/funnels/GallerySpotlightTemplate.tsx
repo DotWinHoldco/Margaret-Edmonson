@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import type { Easing } from 'framer-motion'
 import { useCart } from '@/lib/cart/context'
+import AdaptiveArtwork from '@/components/shared/AdaptiveArtwork'
 import type { FunnelTemplateProps } from './types'
 
 const ease: Easing = [0.22, 1, 0.36, 1]
@@ -163,12 +164,8 @@ export default function GallerySpotlightTemplate({ funnel, product, images, vari
           </div>
           {detailImage && (
             <FadeUp delay={0.3} className="hidden md:block">
-              <div className="relative rounded-sm overflow-hidden opacity-60 bg-[#1A1A1A] flex items-center justify-center">
-                <img
-                  src={detailImage.url}
-                  alt="Detail"
-                  className="w-full h-auto max-h-[70vh] object-contain"
-                />
+              <div className="relative rounded-sm overflow-hidden opacity-60">
+                <AdaptiveArtwork src={detailImage.url} alt="Detail" mode="morph" maxHeight="70vh" />
               </div>
             </FadeUp>
           )}
@@ -180,12 +177,8 @@ export default function GallerySpotlightTemplate({ funnel, product, images, vari
         <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-3 gap-12 items-center">
           {detailImage && (
             <FadeUp className="hidden md:block">
-              <div className="relative rounded-sm overflow-hidden shadow-xl bg-cream flex items-center justify-center">
-                <img
-                  src={detailImage.url}
-                  alt="Artwork detail"
-                  className="w-full h-auto max-h-[70vh] object-contain"
-                />
+              <div className="relative rounded-sm overflow-hidden shadow-xl">
+                <AdaptiveArtwork src={detailImage.url} alt="Artwork detail" mode="morph" maxHeight="70vh" />
               </div>
             </FadeUp>
           )}
@@ -217,12 +210,8 @@ export default function GallerySpotlightTemplate({ funnel, product, images, vari
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
             {heroImage && (
               <FadeUp>
-                <div className="relative rounded-sm overflow-hidden shadow-2xl bg-[#F5F0E8] flex items-center justify-center">
-                  <img
-                    src={heroImage.url}
-                    alt={product.title}
-                    className="w-full h-auto max-h-[70vh] object-contain"
-                  />
+                <div className="relative rounded-sm overflow-hidden shadow-2xl">
+                  <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="morph" maxHeight="70vh" />
                 </div>
               </FadeUp>
             )}
