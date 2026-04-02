@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
@@ -28,62 +28,99 @@ function Pop({ children, className = '', delay = 0 }: { children: React.ReactNod
   )
 }
 
-/* --- Shattered glass mosaic fragment --- */
-function MosaicFragment({
-  imageUrl,
-  col,
-  row,
-  cols,
-  rows,
-  index,
-}: {
-  imageUrl: string
-  col: number
-  row: number
-  cols: number
-  rows: number
-  index: number
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-40px' })
+/* --- Horizontally scrollable mosaic with zoom-on-hover --- */
+function MosaicStrip({ imageUrl }: { imageUrl: string }) {
+  const stripRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const inView = useInView(sectionRef, { once: true, margin: '-60px' })
+  const [zoomedTile, setZoomedTile] = useState<number | null>(null)
 
-  // Deterministic pseudo-random rotation from index
-  const rotation = ((index * 7 + 3) % 9) / 2.25 - 2 // range ~ -2 to +2
-  const fadeDelay = 0.05 + ((index * 13 + 5) % 20) * 0.04 // staggered 0.05 - 0.85s
+  const cols = 8
+  const rows = 3
+  const tiles = Array.from({ length: cols * rows }, (_, i) => i)
+
+  // Mouse/touch horizontal scroll
+  const handleWheel = (e: React.WheelEvent) => {
+    if (stripRef.current && Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+      e.preventDefault()
+      stripRef.current.scrollLeft += e.deltaY
+    }
+  }
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.7, rotate: rotation * 3 }}
-      animate={
-        inView
-          ? { opacity: 1, scale: 1, rotate: rotation }
-          : { opacity: 0, scale: 0.7, rotate: rotation * 3 }
-      }
-      transition={{ duration: 0.6, ease, delay: fadeDelay }}
-      whileHover={{ scale: 1.08, rotate: 0, zIndex: 10 }}
-      className="relative overflow-hidden cursor-pointer"
-      style={{ aspectRatio: '1' }}
-    >
-      <div className="absolute inset-0.5 overflow-hidden rounded-sm">
-        <img
-          src={imageUrl}
-          alt=""
-          className="absolute w-full h-full"
+    <div ref={sectionRef}>
+      {/* Scroll hint */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ delay: 0.8 }}
+        className="text-center font-body text-xs uppercase tracking-[0.3em] text-cream/30 mb-4"
+      >
+        ← Scroll to explore the artwork →
+      </motion.p>
+
+      <div
+        ref={stripRef}
+        onWheel={handleWheel}
+        className="overflow-x-auto cursor-grab active:cursor-grabbing"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+      >
+        <div
+          className="grid gap-[2px]"
           style={{
-            width: `${cols * 100}%`,
-            height: `${rows * 100}%`,
-            maxWidth: 'none',
-            objectFit: 'cover',
-            left: `${-(col / (cols - 1)) * (cols - 1) * 100}%`,
-            top: `${-(row / (rows - 1)) * (rows - 1) * 100}%`,
+            gridTemplateColumns: `repeat(${cols}, minmax(120px, 1fr))`,
+            gridTemplateRows: `repeat(${rows}, 120px)`,
+            width: `max(100%, ${cols * 130}px)`,
           }}
-        />
+        >
+          {tiles.map((index) => {
+            const col = index % cols
+            const row = Math.floor(index / cols)
+            const rotation = ((index * 7 + 3) % 9) / 2.25 - 2
+            const fadeDelay = 0.1 + ((index * 3) % 12) * 0.06
+            const isZoomed = zoomedTile === index
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.5, ease, delay: fadeDelay }}
+                onClick={() => setZoomedTile(isZoomed ? null : index)}
+                onHoverStart={() => setZoomedTile(index)}
+                onHoverEnd={() => setZoomedTile(null)}
+                className="relative overflow-hidden cursor-pointer"
+                style={{
+                  zIndex: isZoomed ? 20 : 1,
+                  transform: isZoomed ? 'scale(1.6) rotate(0deg)' : `rotate(${rotation * 0.3}deg)`,
+                  transition: 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), z-index 0s',
+                }}
+              >
+                <div className="absolute inset-0 overflow-hidden rounded-sm">
+                  <img
+                    src={imageUrl}
+                    alt=""
+                    draggable={false}
+                    style={{
+                      position: 'absolute',
+                      width: `${cols * 100}%`,
+                      height: `${rows * 100}%`,
+                      maxWidth: 'none',
+                      objectFit: 'cover',
+                      left: `${-col * 100}%`,
+                      top: `${-row * 100}%`,
+                    }}
+                  />
+                </div>
+                {/* Glass edge */}
+                <div className={`absolute inset-0 border rounded-sm pointer-events-none transition-colors duration-300 ${isZoomed ? 'border-gold/50' : 'border-white/10'}`} />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+              </motion.div>
+            )
+          })}
+        </div>
       </div>
-      {/* Glass edge highlight */}
-      <div className="absolute inset-0 border border-white/10 rounded-sm pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-    </motion.div>
+    </div>
   )
 }
 
@@ -151,19 +188,6 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
     : printVariants.length > 0
       ? Math.min(...printVariants.map((v) => v.price))
       : product.base_price
-
-  // Generate mosaic grid positions
-  const mosaicCols = 5
-  const mosaicRows = 6
-  const mosaicFragments = useMemo(() => {
-    const frags: { col: number; row: number; index: number }[] = []
-    for (let r = 0; r < mosaicRows; r++) {
-      for (let c = 0; c < mosaicCols; c++) {
-        frags.push({ col: c, row: r, index: r * mosaicCols + c })
-      }
-    }
-    return frags
-  }, [])
 
   const handleAddToCart = (variant: { id: string; name: string; price: number; variant_type: string }) => {
     dispatch({
@@ -320,30 +344,11 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
           </Pop>
         </div>
 
-        {/* Shattered glass / mosaic reveal */}
+        {/* Horizontally scrollable mosaic reveal */}
         {heroImage && (
-          <div className="mt-20 max-w-5xl mx-auto px-6">
-            <div
-              className="grid gap-1"
-              style={{
-                gridTemplateColumns: `repeat(${mosaicCols}, 1fr)`,
-                gridTemplateRows: `repeat(${mosaicRows}, 1fr)`,
-              }}
-            >
-              {mosaicFragments.map((frag) => (
-                <MosaicFragment
-                  key={frag.index}
-                  imageUrl={heroImage.url}
-                  col={frag.col}
-                  row={frag.row}
-                  cols={mosaicCols}
-                  rows={mosaicRows}
-                  index={frag.index}
-                />
-              ))}
-            </div>
-            {/* Atmospheric glow beneath mosaic */}
-            <div className="mt-4 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+          <div className="mt-20 px-6">
+            <MosaicStrip imageUrl={heroImage.url} />
+            <div className="mt-4 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent max-w-5xl mx-auto" />
           </div>
         )}
       </section>
