@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { sendEmail } from '@/lib/email/send'
 
 export async function GET(request: Request) {
   // Verify cron secret
@@ -43,30 +44,36 @@ export async function GET(request: Request) {
     .lt('last_activity_at', seventyTwoHoursAgo)
 
   let sent = 0
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://artbyme.studio'
 
-  // Process each step
   for (const cart of step1Carts || []) {
-    if (process.env.RESEND_API_KEY) {
-      await sendAbandonedCartEmail(cart, 1)
-      await supabase.from('carts').update({ abandoned_email_1_sent_at: now.toISOString() }).eq('id', cart.id)
-      sent++
-    }
+    await sendEmail({
+      to: cart.email,
+      subject: 'You left something beautiful behind — ArtByME',
+      html: `<div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; color: #2C2C2C;"><div style="text-align: center; margin-bottom: 32px;"><h1 style="font-size: 28px; font-weight: 300; margin: 0;">ArtBy<span style="font-weight: 700;">ME</span></h1></div><h2 style="font-size: 20px; font-weight: 400; text-align: center;">You left something beautiful behind</h2><p style="text-align: center; color: #666; font-size: 14px; line-height: 1.6;">Your cart at ArtByME is waiting for you. Don't let these one-of-a-kind pieces slip away.</p><div style="text-align: center; margin: 28px 0;"><a href="${siteUrl}/cart" style="display: inline-block; background: #3A7D7B; color: white; padding: 14px 36px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 600;">Return to Your Cart</a></div></div>`,
+    })
+    await supabase.from('carts').update({ abandoned_email_1_sent_at: now.toISOString() }).eq('id', cart.id)
+    sent++
   }
 
   for (const cart of step2Carts || []) {
-    if (process.env.RESEND_API_KEY) {
-      await sendAbandonedCartEmail(cart, 2)
-      await supabase.from('carts').update({ abandoned_email_2_sent_at: now.toISOString() }).eq('id', cart.id)
-      sent++
-    }
+    await sendEmail({
+      to: cart.email,
+      subject: 'Still thinking about it? — ArtByME',
+      html: `<div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; color: #2C2C2C;"><div style="text-align: center; margin-bottom: 32px;"><h1 style="font-size: 28px; font-weight: 300; margin: 0;">ArtBy<span style="font-weight: 700;">ME</span></h1></div><h2 style="font-size: 20px; font-weight: 400; text-align: center;">Still thinking about it?</h2><p style="text-align: center; color: #666; font-size: 14px; line-height: 1.6;">Margaret's originals are one-of-a-kind — once they're gone, they're gone. Your cart is still waiting.</p><div style="text-align: center; margin: 28px 0;"><a href="${siteUrl}/cart" style="display: inline-block; background: #3A7D7B; color: white; padding: 14px 36px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 600;">Complete Your Purchase</a></div></div>`,
+    })
+    await supabase.from('carts').update({ abandoned_email_2_sent_at: now.toISOString() }).eq('id', cart.id)
+    sent++
   }
 
   for (const cart of step3Carts || []) {
-    if (process.env.RESEND_API_KEY) {
-      await sendAbandonedCartEmail(cart, 3)
-      await supabase.from('carts').update({ abandoned_email_3_sent_at: now.toISOString() }).eq('id', cart.id)
-      sent++
-    }
+    await sendEmail({
+      to: cart.email,
+      subject: 'Last chance — your cart is waiting — ArtByME',
+      html: `<div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 40px 24px; color: #2C2C2C;"><div style="text-align: center; margin-bottom: 32px;"><h1 style="font-size: 28px; font-weight: 300; margin: 0;">ArtBy<span style="font-weight: 700;">ME</span></h1></div><h2 style="font-size: 20px; font-weight: 400; text-align: center;">Last chance</h2><p style="text-align: center; color: #666; font-size: 14px; line-height: 1.6;">Your cart will expire soon. If you've been eyeing one of Margaret's pieces, now's the time.</p><div style="text-align: center; margin: 28px 0;"><a href="${siteUrl}/cart" style="display: inline-block; background: #D4654A; color: white; padding: 14px 36px; text-decoration: none; border-radius: 4px; font-size: 14px; font-weight: 600;">Don't Miss Out</a></div></div>`,
+    })
+    await supabase.from('carts').update({ abandoned_email_3_sent_at: now.toISOString() }).eq('id', cart.id)
+    sent++
   }
 
   return Response.json({
@@ -77,27 +84,5 @@ export async function GET(request: Request) {
       step3: step3Carts?.length || 0,
     },
     sent,
-  })
-}
-
-async function sendAbandonedCartEmail(cart: { email: string; items: unknown }, step: number) {
-  const subjects: Record<number, string> = {
-    1: 'You left something beautiful behind',
-    2: 'Still thinking about it? Here\'s 10% off',
-    3: 'Last chance — your cart is waiting',
-  }
-
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: process.env.EMAIL_FROM || 'ArtByMe <hello@artbyme.studio>',
-      to: cart.email,
-      subject: subjects[step],
-      html: `<h2>${subjects[step]}</h2><p>Your cart at ArtByMe is waiting for you.</p><p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/cart">Return to your cart</a></p>`,
-    }),
   })
 }

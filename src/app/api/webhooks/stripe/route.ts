@@ -2,6 +2,7 @@ import { getStripe } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
 import { sendServerEvent, hashSHA256 } from '@/lib/meta/capi'
 import { routeOrderToFulfillment } from '@/lib/fulfillment/router'
+import { sendOrderConfirmation } from '@/lib/email/send'
 import { headers } from 'next/headers'
 
 export async function POST(request: Request) {
@@ -143,6 +144,33 @@ export async function POST(request: Request) {
         } catch (err) {
           console.error('Fulfillment routing failed (will retry):', err)
           // Don't fail the webhook — fulfillment can be retried
+        }
+
+        // Send order confirmation email
+        if (session.customer_email) {
+          try {
+            const { data: orderItems } = await supabase
+              .from('order_items')
+              .select('quantity, unit_price, product:products(title), variant:product_variants(name)')
+              .eq('order_id', order.id)
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const emailItems = (orderItems || []).map((oi: any) => ({
+              name: Array.isArray(oi.product) ? oi.product[0]?.title : oi.product?.title || 'Artwork',
+              quantity: oi.quantity,
+              price: oi.unit_price * oi.quantity,
+              variant: Array.isArray(oi.variant) ? oi.variant[0]?.name : oi.variant?.name || undefined,
+            }))
+
+            await sendOrderConfirmation(
+              session.customer_email,
+              order.id,
+              emailItems,
+              order.total
+            )
+          } catch (err) {
+            console.error('Order confirmation email failed:', err)
+          }
         }
       }
 

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { sendEmail } from '@/lib/email/send'
 
 export async function POST(request: Request) {
   const body = await request.json()
@@ -30,22 +31,13 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Failed to submit commission' }, { status: 500 })
   }
 
-  // Send notification email via Resend if configured
-  if (process.env.RESEND_API_KEY) {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || 'ArtByMe <hello@artbyme.studio>',
-        to: 'hello@artbyme.studio',
-        subject: `New Commission Request from ${client_name}`,
-        html: `<h2>New Commission Request</h2><p><strong>Name:</strong> ${client_name}</p><p><strong>Email:</strong> ${client_email}</p><p><strong>Medium:</strong> ${preferred_medium || 'Not specified'}</p><p><strong>Size:</strong> ${preferred_size || 'Not specified'}</p><p><strong>Budget:</strong> ${budget_range || 'Not specified'}</p><p><strong>Description:</strong></p><p>${description}</p>`,
-      }),
-    })
-  }
+  // Send notification email to Margaret
+  await sendEmail({
+    to: 'hello@artbyme.studio',
+    subject: `New Commission Request from ${client_name}`,
+    html: `<h2>New Commission Request</h2><p><strong>Name:</strong> ${client_name}</p><p><strong>Email:</strong> ${client_email}</p><p><strong>Phone:</strong> ${client_phone || 'Not provided'}</p><p><strong>Medium:</strong> ${preferred_medium || 'Not specified'}</p><p><strong>Size:</strong> ${preferred_size || 'Not specified'}</p><p><strong>Budget:</strong> ${budget_range || 'Not specified'}</p><p><strong>Timeline:</strong> ${timeline || 'Not specified'}</p><p><strong>Description:</strong></p><p>${description}</p>`,
+    replyTo: client_email,
+  })
 
   return Response.json({ success: true, commission: data })
 }
