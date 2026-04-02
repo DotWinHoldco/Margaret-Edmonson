@@ -528,9 +528,15 @@ export default function ProjectHubClient({
 
   // Tutorial
   const [tutorialStep, setTutorialStep] = useState<number | null>(null)
+  const [showWelcomeLetter, setShowWelcomeLetter] = useState(false)
   useEffect(() => {
-    if (!localStorage.getItem('artbyme_tutorial_seen')) {
+    const tutorialSeen = localStorage.getItem('artbyme_tutorial_seen')
+    const letterHidden = localStorage.getItem('artbyme_letter_hidden')
+    if (!tutorialSeen) {
       setTutorialStep(0)
+    }
+    if (!letterHidden) {
+      setShowWelcomeLetter(true)
     }
   }, [])
 
@@ -915,6 +921,57 @@ export default function ProjectHubClient({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Welcome Letter ───────────────────────────────────────── */}
+      <div className="mb-8">
+        <button
+          onClick={() => {
+            const next = !showWelcomeLetter
+            setShowWelcomeLetter(next)
+            localStorage.setItem('artbyme_letter_hidden', next ? '' : '1')
+            if (!next) localStorage.setItem('artbyme_letter_hidden', '1')
+            else localStorage.removeItem('artbyme_letter_hidden')
+          }}
+          className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#C4724E]/10 to-[#C9A84C]/10 border border-[#C4724E]/20 px-4 py-2.5 font-body text-sm font-medium text-[#C4724E] hover:from-[#C4724E]/15 hover:to-[#C9A84C]/15 transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+          </svg>
+          {showWelcomeLetter ? 'Hide Welcome Letter' : 'Show Welcome Letter'}
+          <motion.svg
+            animate={{ rotate: showWelcomeLetter ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="w-3.5 h-3.5 ml-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </motion.svg>
+        </button>
+
+        <AnimatePresence>
+          {showWelcomeLetter && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 rounded-xl border border-[#C4724E]/15 overflow-hidden shadow-lg">
+                <iframe
+                  src="/welcome"
+                  className="w-full border-0"
+                  style={{ height: '80vh', minHeight: 600 }}
+                  title="Welcome Letter"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* ── Section 1: Welcome Header ──────────────────────────────── */}
       <motion.div
