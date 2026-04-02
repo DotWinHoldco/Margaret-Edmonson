@@ -47,7 +47,7 @@ export async function PATCH(
       'title',
       'slug',
       'category_id',
-      'description',
+      'description_html',
       'medium',
       'dimensions',
       'base_price',

@@ -46,6 +46,7 @@ export default function EditProductPage({
   const [error, setError] = useState<string | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [images, setImages] = useState<ProductImage[]>([])
+  const [uploading, setUploading] = useState(false)
 
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
@@ -88,7 +89,7 @@ export default function EditProductPage({
       setTitle(product.title || '')
       setSlug(product.slug || '')
       setCategoryId(product.category_id || '')
-      setDescription(product.description || '')
+      setDescription(product.description_html || '')
       setMedium(product.medium || '')
       setDimensions(product.dimensions || '')
       setBasePrice(product.base_price?.toString() || '')
@@ -163,7 +164,7 @@ export default function EditProductPage({
         title,
         slug: slug || generateSlug(title),
         category_id: categoryId || null,
-        description,
+        description_html: description,
         medium,
         dimensions,
         base_price: basePrice ? parseFloat(basePrice) : 0,
@@ -515,45 +516,123 @@ export default function EditProductPage({
             <h2 className="mb-4 font-display text-lg font-semibold text-charcoal">
               Images
             </h2>
-            {images.length > 0 ? (
+            {images.length > 0 && (
               <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {images.map((image) => (
+                {images
+                  .sort((a, b) => a.sort_order - b.sort_order)
+                  .map((image) => (
                   <div
                     key={image.id}
-                    className="relative overflow-hidden rounded-lg border border-charcoal/10"
+                    className="group relative overflow-hidden rounded-lg border border-charcoal/10"
                   >
                     <img
                       src={image.url}
                       alt={image.alt_text || 'Product image'}
-                      className="aspect-square w-full object-cover"
+                      className="aspect-square w-full object-contain bg-cream"
                     />
                     {image.is_primary && (
                       <span className="absolute left-2 top-2 rounded-full bg-teal px-2 py-0.5 font-body text-[10px] font-medium text-cream">
                         Primary
                       </span>
                     )}
+                    {/* Hover actions */}
+                    <div className="absolute inset-0 flex items-end justify-center gap-2 bg-gradient-to-t from-charcoal/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pb-3">
+                      {!image.is_primary && (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            const res = await fetch(`/api/admin/products/${id}/images`, {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ imageId: image.id, is_primary: true }),
+                            })
+                            if (res.ok) {
+                              setImages((prev) =>
+                                prev.map((img) => ({
+                                  ...img,
+                                  is_primary: img.id === image.id,
+                                }))
+                              )
+                            }
+                          }}
+                          className="rounded-md bg-white/90 px-2.5 py-1 font-body text-[11px] font-medium text-charcoal hover:bg-white transition-colors"
+                        >
+                          Set Primary
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (!confirm('Delete this image?')) return
+                          const res = await fetch(`/api/admin/products/${id}/images`, {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ imageId: image.id }),
+                          })
+                          if (res.ok) {
+                            setImages((prev) => prev.filter((img) => img.id !== image.id))
+                          }
+                        }}
+                        className="rounded-md bg-coral/90 px-2.5 py-1 font-body text-[11px] font-medium text-white hover:bg-coral transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
-            ) : null}
-            <div className="flex flex-col items-center rounded-lg border-2 border-dashed border-charcoal/15 py-8">
-              <svg
-                className="h-8 w-8 text-charcoal/25"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <p className="mt-2 font-body text-sm text-charcoal/50">
-                Image upload coming soon
-              </p>
-            </div>
+            )}
+            <label className="flex cursor-pointer flex-col items-center rounded-lg border-2 border-dashed border-charcoal/15 py-8 hover:border-teal/40 hover:bg-teal/[0.02] transition-colors">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={async (e) => {
+                  const files = e.target.files
+                  if (!files?.length) return
+                  setUploading(true)
+                  try {
+                    const formData = new FormData()
+                    Array.from(files).forEach((f) => formData.append('files', f))
+                    const res = await fetch(`/api/admin/products/${id}/images`, {
+                      method: 'POST',
+                      body: formData,
+                    })
+                    const json = await res.json()
+                    if (json.data) {
+                      setImages((prev) => [...prev, ...json.data])
+                    }
+                  } catch (err) {
+                    console.error('Upload failed:', err)
+                  } finally {
+                    setUploading(false)
+                    e.target.value = ''
+                  }
+                }}
+              />
+              {uploading ? (
+                <>
+                  <svg className="h-8 w-8 animate-spin text-teal" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  <p className="mt-2 font-body text-sm text-teal">Uploading...</p>
+                </>
+              ) : (
+                <>
+                  <svg className="h-8 w-8 text-charcoal/25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                  </svg>
+                  <p className="mt-2 font-body text-sm text-charcoal/50">
+                    Click to upload images <span className="text-charcoal/30">(or drag and drop)</span>
+                  </p>
+                  <p className="mt-1 font-body text-xs text-charcoal/30">
+                    JPG, PNG, WebP up to 10MB each
+                  </p>
+                </>
+              )}
+            </label>
           </section>
 
           {/* Variants */}
