@@ -1,11 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn, signInWithGoogle, signInWithMagicLink } from '@/lib/supabase/auth'
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [mode, setMode] = useState<'password' | 'magic'>('password')
@@ -13,23 +21,31 @@ export default function LoginPage() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/admin'
 
   async function handlePasswordLogin(e: React.FormEvent) {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
     setError('')
     const { error } = await signIn(email, password)
     if (error) {
       setError(error.message)
+      setLoading(false)
     } else {
-      router.push('/account')
+      // Force cookie sync before navigating so middleware sees the session
       router.refresh()
+      // Small delay to let the refresh complete before pushing
+      setTimeout(() => {
+        router.push(redirectTo)
+      }, 100)
     }
-    setLoading(false)
   }
 
   async function handleMagicLink(e: React.FormEvent) {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
     setError('')
     const { error } = await signInWithMagicLink(email)
@@ -51,7 +67,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <h1 className="font-display text-3xl font-light text-charcoal">Welcome Back</h1>
           <p className="mt-2 font-body text-sm text-charcoal/60">
-            Sign in to your ArtByMe account
+            Sign in to your ArtByME account
           </p>
         </div>
 
