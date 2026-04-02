@@ -56,6 +56,8 @@ export async function PATCH(
       'status',
       'is_original',
       'is_featured',
+      // NOTE: Requires `funnel_eligible BOOLEAN DEFAULT true` column on products table in Supabase
+      'funnel_eligible',
       'tags',
     ]
 

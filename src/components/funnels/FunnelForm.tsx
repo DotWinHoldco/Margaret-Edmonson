@@ -7,6 +7,7 @@ interface Product {
   id: string
   title: string
   slug: string
+  funnel_eligible?: boolean | null
 }
 
 interface FunnelFormData {
@@ -142,11 +143,17 @@ export default function FunnelForm({ initialData, mode }: FunnelFormProps) {
       .then((r) => r.json())
       .then((data) => {
         const list = data.data || data.products || []
-        setProducts(list.map((p: Record<string, unknown>) => ({
-          id: p.id as string,
-          title: p.title as string,
-          slug: p.slug as string,
-        })))
+        // Only show products where funnel_eligible is true (treat null/undefined as true)
+        setProducts(
+          list
+            .filter((p: Record<string, unknown>) => p.funnel_eligible !== false)
+            .map((p: Record<string, unknown>) => ({
+              id: p.id as string,
+              title: p.title as string,
+              slug: p.slug as string,
+              funnel_eligible: p.funnel_eligible as boolean | null,
+            }))
+        )
       })
       .catch(() => {})
   }, [])

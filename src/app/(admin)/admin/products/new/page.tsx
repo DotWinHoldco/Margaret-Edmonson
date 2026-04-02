@@ -44,6 +44,7 @@ export default function NewProductPage() {
   const [status, setStatus] = useState('draft')
   const [isOriginal, setIsOriginal] = useState(false)
   const [isFeatured, setIsFeatured] = useState(false)
+  const [funnelEligible, setFunnelEligible] = useState(true)
   const [tags, setTags] = useState('')
   const [variants, setVariants] = useState<Variant[]>([])
 
@@ -105,6 +106,7 @@ export default function NewProductPage() {
         status,
         is_original: isOriginal,
         is_featured: isFeatured,
+        funnel_eligible: funnelEligible,
         tags: tags
           ? tags
               .split(',')
@@ -346,6 +348,18 @@ export default function NewProductPage() {
                   />
                   <span className="font-body text-sm text-charcoal">
                     Featured
+                  </span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={funnelEligible}
+                    onChange={(e) => setFunnelEligible(e.target.checked)}
+                    className="h-4 w-4 rounded border-charcoal/30 text-teal focus:ring-teal"
+                  />
+                  <span className="font-body text-sm text-charcoal">
+                    Make this product available for funnels
                   </span>
                 </label>
               </div>

@@ -57,6 +57,8 @@ export async function POST(request: NextRequest) {
         status: body.status || 'draft',
         is_original: body.is_original || false,
         is_featured: body.is_featured || false,
+        // NOTE: Requires `funnel_eligible BOOLEAN DEFAULT true` column on products table in Supabase
+        funnel_eligible: body.funnel_eligible !== undefined ? body.funnel_eligible : true,
         tags: Array.isArray(body.tags) ? body.tags : [],
       })
       .select()
