@@ -1030,6 +1030,23 @@ export default function ProjectHubClient({
           title="Platform Features Built"
           subtitle="A comprehensive look at everything that has been developed for ArtByME."
         />
+
+        {/* Stats strip */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-6 px-4 py-3 bg-charcoal/[0.03] rounded-lg border border-charcoal/6">
+          {[
+            { value: '25', label: 'Public Pages' },
+            { value: '27', label: 'Admin Pages' },
+            { value: '6', label: 'Sales Funnels' },
+            { value: '45', label: 'API Routes' },
+            { value: '28k+', label: 'Lines of Code' },
+          ].map((stat) => (
+            <div key={stat.label} className="flex items-baseline gap-1.5">
+              <span className="font-display text-lg font-bold text-charcoal">{stat.value}</span>
+              <span className="font-body text-xs text-charcoal/40 uppercase tracking-wider">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+
         <div className="space-y-3">
           {FEATURES_DATA.map((section, idx) => (
             <div
