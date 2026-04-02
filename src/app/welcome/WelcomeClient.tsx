@@ -174,7 +174,7 @@ export default function WelcomeClient() {
           {/* ═══ GREETING ═══ */}
           <div className="w-greeting">
             <p>Hi Margaret!</p>
-            <p>We are so excited to share this with you. When this system is fully complete, you&apos;ll be able to do everything you need to effectively run your art business — all from this one place.</p>
+            <p>We are so excited to share this with you. <strong style={{ color: '#2C2A26' }}>When this system is fully complete, you&apos;ll be able to do everything you need to effectively run your art business</strong> — all from this one place.</p>
             <p>We&apos;ve built the substantial bones for your entire art operating system. Because of that, changes from here on out can happen very quickly.</p>
           </div>
 

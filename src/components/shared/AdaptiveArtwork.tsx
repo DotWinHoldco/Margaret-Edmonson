@@ -118,7 +118,7 @@ export default function AdaptiveArtwork({
   if (mode === 'morph') {
     return (
       <div
-        className={`relative overflow-hidden transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+        className={`relative overflow-hidden ${className}`}
         style={{
           aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
           maxHeight: maxHeight || undefined,
@@ -135,7 +135,6 @@ export default function AdaptiveArtwork({
             const img = e.currentTarget
             handleLoad(img.naturalWidth, img.naturalHeight)
           }}
-          crossOrigin="anonymous"
         />
       </div>
     )
@@ -144,11 +143,12 @@ export default function AdaptiveArtwork({
   // 'fill' mode — edge color sampling
   return (
     <div
-      className={`relative overflow-hidden flex items-center justify-center transition-all duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+      className={`relative overflow-hidden flex items-center justify-center ${className}`}
       style={{
-        backgroundColor: edgeColor || 'transparent',
+        backgroundColor: edgeColor || '#FAF7F2',
         maxHeight: maxHeight || undefined,
         width: '100%',
+        padding: padding || undefined,
       }}
       onClick={onClick}
     >

@@ -374,7 +374,7 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
             {detailImage && (
               <Pop delay={0.1}>
                 <div className="relative md:h-full group border-[3px] border-gold/70 overflow-hidden min-h-[500px]">
-                  <AdaptiveArtwork src={detailImage.url} alt="Artwork detail" mode="morph" maxHeight="70vh" padding="6px" />
+                  <AdaptiveArtwork src={detailImage.url} alt="Artwork detail" mode="fill" maxHeight="70vh" padding="6px" />
                 </div>
               </Pop>
             )}
@@ -432,7 +432,7 @@ export default function BoldShowcaseTemplate({ funnel, product, images, variants
                   <div className="absolute -inset-4 shadow-[8px_12px_40px_rgba(0,0,0,0.25),_-2px_-2px_20px_rgba(255,255,255,0.3)] bg-charcoal/5 rounded-sm" />
                   {/* Gold frame flush on container edge */}
                   <div className="relative border-[4px] border-gold/60 overflow-hidden max-w-[440px]">
-                    <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="morph" maxHeight="550px" padding="6px" />
+                    <AdaptiveArtwork src={heroImage.url} alt={product.title} mode="fill" maxHeight="550px" padding="6px" />
                   </div>
                 </div>
               </div>
