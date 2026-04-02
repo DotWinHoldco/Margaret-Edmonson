@@ -15,17 +15,19 @@ export default function WelcomeClient() {
 
   useEffect(() => {
     // If user already dismissed the welcome letter permanently, skip straight to dashboard
-    if (localStorage.getItem('artbyme_welcome_dismissed')) {
+    // Only skip the letter if permanently dismissed
+    if (localStorage.getItem('artbyme_welcome_dismissed') === 'permanent') {
       router.replace('/admin')
       return
     }
+    // Clear session-level dismiss so letter shows again on next visit
+    localStorage.removeItem('artbyme_welcome_dismissed')
     setReady(true)
   }, [router])
 
   function enterDashboard(dismissPermanently: boolean) {
-    if (dismissPermanently) {
-      localStorage.setItem('artbyme_welcome_dismissed', '1')
-    }
+    // Always mark as dismissed so dashboard doesn't redirect back
+    localStorage.setItem('artbyme_welcome_dismissed', dismissPermanently ? 'permanent' : 'session')
     router.push('/admin?tutorial=1')
   }
 

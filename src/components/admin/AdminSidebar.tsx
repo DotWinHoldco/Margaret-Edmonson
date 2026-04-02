@@ -165,7 +165,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
     await supabase.auth.signOut()
-    router.push('/auth/login')
+    router.push('/login')
   }
 
   return (
