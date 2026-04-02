@@ -311,35 +311,39 @@ function HeroSection() {
 const FEATURED = [
   {
     src: `${ART.encourage}/Encouragement Series Overview_1.jpg`,
-    title: 'Encouragement Series Overview',
+    title: 'Encouragement Series',
     series: 'Encouragement Series',
-    price: '$285',
+    price: 'From $31',
     span: 'md:col-span-2 md:row-span-2',
     aspect: 'aspect-[3/4]',
+    href: '/shop/encouragement-series',
   },
   {
     src: `${ART.texas}/Deep in the Heart of Texas_2.jpg`,
     title: 'Deep in the Heart of Texas',
     series: 'Texas Themed',
-    price: '$195',
+    price: '$95',
     span: '',
     aspect: 'aspect-square',
+    href: '/shop/art/deep-in-the-heart-of-texas',
   },
   {
     src: `${ART.cactus}/Hot Air_1.jpg`,
     title: 'Hot Air',
     series: 'Cactus Collection',
-    price: '$225',
+    price: '$450',
     span: '',
     aspect: 'aspect-square',
+    href: '/shop/art/hot-air',
   },
   {
     src: `${ART.beach}/Magnolia Plantation and Gardens SC.jpg`,
-    title: 'Magnolia Plantation and Gardens SC',
+    title: 'Magnolia Plantation and Gardens, SC',
     series: 'Beach & SC',
-    price: '$310',
+    price: '$95',
     span: 'md:col-span-2',
     aspect: 'aspect-[16/9]',
+    href: '/shop/art/magnolia-plantation-and-gardens-sc',
   },
 ]
 
@@ -386,13 +390,14 @@ function FeaturedSection() {
           className="grid grid-cols-1 gap-5 md:grid-cols-4 md:grid-rows-2"
         >
           {FEATURED.map((item, i) => (
-            <motion.article
+            <motion.a
               key={item.title}
+              href={item.href}
               variants={scaleIn}
               custom={i}
               whileHover={{ y: -6 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className={`group relative cursor-pointer overflow-hidden rounded-sm ${item.span}`}
+              className={`group relative cursor-pointer overflow-hidden rounded-sm ${item.span} block`}
             >
               <div className={`relative w-full overflow-hidden ${item.aspect}`}>
                 <Image
@@ -430,7 +435,7 @@ function FeaturedSection() {
                   <path d="M0,12 L400,12 L400,0 Q390,8 380,4 T360,8 T340,2 T320,6 T300,4 T280,10 T260,4 T240,8 T220,2 T200,6 T180,4 T160,10 T140,4 T120,8 T100,2 T80,6 T60,4 T40,10 T20,4 T0,8 Z" />
                 </svg>
               </div>
-            </motion.article>
+            </motion.a>
           ))}
         </motion.div>
       </div>

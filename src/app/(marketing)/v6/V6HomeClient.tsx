@@ -330,15 +330,15 @@ function HeroSection() {
    2. ARTWORK MOSAIC — Pinterest-Style Masonry
    ════════════════════════════════════════════════════════════ */
 const mosaicArt = [
-  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air II.jpg', title: 'Hot Air II', span: 'row-span-2' },
-  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Dolphin Watch.jpg', title: 'Dolphin Watch', span: '' },
-  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Seeds.png', title: 'Seeds', span: 'row-span-2' },
-  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Spring Break Mountain Boat Dock.jpg', title: 'Spring Break', span: '' },
-  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Flower Power_1.jpg', title: 'Flower Power', span: 'row-span-2' },
-  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Solo.jpg', title: 'Solo', span: '' },
-  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Curious Mind.png', title: 'Curious Mind', span: '' },
-  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Road Trip.jpg', title: 'Road Trip', span: 'row-span-2' },
-  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Fun at the Beach_1.jpg', title: 'Fun at the Beach', span: '' },
+  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air II.jpg', title: 'Hot Air II', span: 'row-span-2', href: '/shop/art/hot-air' },
+  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Dolphin Watch.jpg', title: 'Dolphin Watch', span: '', href: '/shop/art/dolphin-watch' },
+  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Seeds.png', title: 'Seeds', span: 'row-span-2', href: '/shop/encouragement-series' },
+  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Spring Break Mountain Boat Dock.jpg', title: 'Spring Break', span: '', href: '/shop/art/spring-break-mountain-boat-dock' },
+  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Flower Power_1.jpg', title: 'Flower Power', span: 'row-span-2', href: '/shop/art/flower-power' },
+  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Solo.jpg', title: 'Solo', span: '', href: '/shop/cactuses' },
+  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Curious Mind.png', title: 'Curious Mind', span: '', href: '/shop/encouragement-series' },
+  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Road Trip.jpg', title: 'Road Trip', span: 'row-span-2', href: '/shop/art/road-trip' },
+  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Fun at the Beach_1.jpg', title: 'Fun at the Beach', span: '', href: '/shop/beach-and-sc' },
 ]
 
 function MosaicSection() {
@@ -374,24 +374,26 @@ function MosaicSection() {
               variants={springIn}
               custom={i}
             >
-              <div className="relative overflow-hidden rounded-lg shadow-md group-hover:shadow-xl transition-shadow duration-300">
-                <motion.div
-                  whileHover={{ scale: 1.03, y: -4 }}
-                  transition={spring}
-                >
-                  <Image
-                    src={art.src}
-                    alt={art.title}
-                    width={400}
-                    height={art.span ? 600 : 400}
-                    className="w-full h-auto object-cover"
-                    sizes="(max-width: 768px) 50vw, 33vw"
-                  />
-                </motion.div>
-              </div>
-              <p className="font-hand text-xl text-charcoal/80 mt-2 ml-1">
-                {art.title}
-              </p>
+              <Link href={art.href}>
+                <div className="relative overflow-hidden rounded-lg shadow-md group-hover:shadow-xl transition-shadow duration-300">
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -4 }}
+                    transition={spring}
+                  >
+                    <Image
+                      src={art.src}
+                      alt={art.title}
+                      width={400}
+                      height={art.span ? 600 : 400}
+                      className="w-full h-auto object-cover"
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+                  </motion.div>
+                </div>
+                <p className="font-hand text-xl text-charcoal/80 mt-2 ml-1">
+                  {art.title}
+                </p>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -442,8 +444,8 @@ function AboutSection() {
                 />
                 <div className="bg-white p-2 shadow-md rotate-1">
                   <Image
-                    src="/Margaret Edmondson/Margaret Bio Photos/Margaret with Fun at the Beach Painting.jpeg"
-                    alt="Margaret Edmondson with her Fun at the Beach painting"
+                    src="/Margaret Edmondson/Margaret Bio Photos/Margaret at Gallery with Cactus.jpeg"
+                    alt="Margaret Edmondson at a gallery with her cactus painting"
                     width={400}
                     height={500}
                     className="w-full h-auto"
@@ -494,11 +496,11 @@ function AboutSection() {
    4. COLLECTIONS CAROUSEL — Swipeable Cards
    ════════════════════════════════════════════════════════════ */
 const collections = [
-  { name: 'Texas', count: 6, src: '/Margaret Edmondson/ARTWORK/Texas Themed/Graze Daze_1.jpg', rotation: -1 },
-  { name: 'Cactuses', count: 4, src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air_1.jpg', rotation: 1 },
-  { name: 'Beach & Coastal', count: 6, src: '/Margaret Edmondson/ARTWORK/Beach and SC/Seaside with Seagull_1.jpg', rotation: -2 },
-  { name: 'Encouragement', count: 6, src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Grow.png', rotation: 1 },
-  { name: 'Custom Portraits', count: 3, src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/Custom Pet Portrait Example_1.jpg', rotation: -1 },
+  { name: 'Texas', count: 6, src: '/Margaret Edmondson/ARTWORK/Texas Themed/Graze Daze_1.jpg', rotation: -1, slug: 'texas-themed' },
+  { name: 'Cactuses', count: 4, src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air_1.jpg', rotation: 1, slug: 'cactuses' },
+  { name: 'Beach & Coastal', count: 6, src: '/Margaret Edmondson/ARTWORK/Beach and SC/Seaside with Seagull_1.jpg', rotation: -2, slug: 'beach-and-sc' },
+  { name: 'Encouragement', count: 6, src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Grow.png', rotation: 1, slug: 'encouragement-series' },
+  { name: 'Custom Portraits', count: 3, src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/Custom Pet Portrait Example_1.jpg', rotation: -1, slug: 'custom-portraits' },
 ]
 
 function CollectionsSection() {
@@ -542,25 +544,27 @@ function CollectionsSection() {
             transition={spring}
             style={{ rotate: col.rotation }}
           >
-            <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
-              <div className="relative h-64 md:h-72 overflow-hidden">
-                <Image
-                  src={col.src}
-                  alt={col.name}
-                  fill
-                  className="object-cover"
-                  sizes="320px"
-                />
-                <div className="absolute top-3 right-3 bg-coral text-white text-sm font-body font-semibold px-3 py-1 rounded-full">
-                  {col.count} pieces
+            <Link href={`/shop/${col.slug}`}>
+              <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
+                <div className="relative h-64 md:h-72 overflow-hidden">
+                  <Image
+                    src={col.src}
+                    alt={col.name}
+                    fill
+                    className="object-cover"
+                    sizes="320px"
+                  />
+                  <div className="absolute top-3 right-3 bg-coral text-white text-sm font-body font-semibold px-3 py-1 rounded-full">
+                    {col.count} pieces
+                  </div>
+                </div>
+                <div className="p-5">
+                  <h3 className="font-display text-2xl text-charcoal">
+                    {col.name}
+                  </h3>
                 </div>
               </div>
-              <div className="p-5">
-                <h3 className="font-display text-2xl text-charcoal">
-                  {col.name}
-                </h3>
-              </div>
-            </div>
+            </Link>
           </motion.div>
         ))}
       </motion.div>

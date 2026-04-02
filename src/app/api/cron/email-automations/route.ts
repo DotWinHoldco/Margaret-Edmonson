@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization')
@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   // Get active automations with their steps
   const { data: automations } = await supabase

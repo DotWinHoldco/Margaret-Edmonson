@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET(
   request: Request,
@@ -7,7 +7,7 @@ export async function GET(
   const { id: lessonId } = await props.params
 
   try {
-    const supabase = await createServiceClient()
+    const supabase = await createClient()
 
     const { data: comments, error } = await supabase
       .from('lesson_comments')
@@ -33,7 +33,7 @@ export async function POST(
   const { id: lessonId } = await props.params
 
   try {
-    const supabase = await createServiceClient()
+    const supabase = await createClient()
 
     // Authenticate user
     const { data: { user } } = await supabase.auth.getUser()

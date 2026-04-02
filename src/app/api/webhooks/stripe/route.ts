@@ -1,5 +1,5 @@
 import { getStripe } from '@/lib/stripe'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { sendServerEvent, hashSHA256 } from '@/lib/meta/capi'
 import { routeOrderToFulfillment } from '@/lib/fulfillment/router'
 import { headers } from 'next/headers'
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   // Log webhook
   await supabase.from('webhook_logs').insert({

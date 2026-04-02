@@ -1,5 +1,5 @@
 import { getStripe } from '@/lib/stripe'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { sendServerEvent, hashSHA256 } from '@/lib/meta/capi'
 
 export async function POST(request: Request) {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'No items provided' }, { status: 400 })
   }
 
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   // Validate prices server-side — NEVER trust client prices
   const validatedItems = []

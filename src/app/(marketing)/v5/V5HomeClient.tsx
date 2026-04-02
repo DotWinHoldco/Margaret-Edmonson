@@ -196,52 +196,56 @@ function FeaturedSpread() {
         className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start"
       >
         {/* Left: large artwork */}
-        <motion.div
-          variants={clipReveal}
-          custom={0}
-          className="lg:col-span-7 relative aspect-[3/4] overflow-hidden"
-        >
-          <Image
-            src={art.hotAir1}
-            alt="Hot Air — vivid cactus and hot air balloon"
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 58vw"
-          />
-          <div className="absolute bottom-0 left-0 p-6 md:p-8">
-            <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
-              Cactus Series
-            </p>
-            <p className="font-editorial text-lg md:text-xl text-white mt-1">
-              Hot Air
-            </p>
-          </div>
-        </motion.div>
+        <Link href="/shop/art/hot-air" className="lg:col-span-7">
+          <motion.div
+            variants={clipReveal}
+            custom={0}
+            className="relative aspect-[3/4] overflow-hidden"
+          >
+            <Image
+              src={art.hotAir1}
+              alt="Hot Air — vivid cactus and hot air balloon"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 58vw"
+            />
+            <div className="absolute bottom-0 left-0 p-6 md:p-8">
+              <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
+                Cactus Series
+              </p>
+              <p className="font-editorial text-lg md:text-xl text-white mt-1">
+                Hot Air
+              </p>
+            </div>
+          </motion.div>
+        </Link>
 
         {/* Right column */}
         <div className="lg:col-span-5 flex flex-col gap-6 lg:gap-8">
           {/* Top right artwork */}
-          <motion.div
-            variants={clipReveal}
-            custom={1}
-            className="relative aspect-[4/3] overflow-hidden"
-          >
-            <Image
-              src={art.unexpected}
-              alt="Unexpected — Encouragement Series"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 40vw"
-            />
-            <div className="absolute bottom-0 left-0 p-5">
-              <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
-                Encouragement Series
-              </p>
-              <p className="font-editorial text-base text-white mt-1">
-                Unexpected
-              </p>
-            </div>
-          </motion.div>
+          <Link href="/shop/encouragement-series">
+            <motion.div
+              variants={clipReveal}
+              custom={1}
+              className="relative aspect-[4/3] overflow-hidden"
+            >
+              <Image
+                src={art.unexpected}
+                alt="Unexpected — Encouragement Series"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+              <div className="absolute bottom-0 left-0 p-5">
+                <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
+                  Encouragement Series
+                </p>
+                <p className="font-editorial text-base text-white mt-1">
+                  Unexpected
+                </p>
+              </div>
+            </motion.div>
+          </Link>
 
           {/* Pull quote */}
           <motion.blockquote
@@ -261,27 +265,29 @@ function FeaturedSpread() {
           </motion.blockquote>
 
           {/* Bottom right artwork */}
-          <motion.div
-            variants={clipReveal}
-            custom={3}
-            className="relative aspect-[4/3] overflow-hidden"
-          >
-            <Image
-              src={art.funBeach}
-              alt="Fun at the Beach — coastal scene"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 40vw"
-            />
-            <div className="absolute bottom-0 left-0 p-5">
-              <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
-                Beach &amp; Coastal
-              </p>
-              <p className="font-editorial text-base text-white mt-1">
-                Fun at the Beach
-              </p>
-            </div>
-          </motion.div>
+          <Link href="/shop/beach-and-sc">
+            <motion.div
+              variants={clipReveal}
+              custom={3}
+              className="relative aspect-[4/3] overflow-hidden"
+            >
+              <Image
+                src={art.funBeach}
+                alt="Fun at the Beach — coastal scene"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
+              <div className="absolute bottom-0 left-0 p-5">
+                <p className="font-body text-[10px] uppercase tracking-[0.25em] text-white/80">
+                  Beach &amp; Coastal
+                </p>
+                <p className="font-editorial text-base text-white mt-1">
+                  Fun at the Beach
+                </p>
+              </div>
+            </motion.div>
+          </Link>
         </div>
       </motion.div>
     </section>
@@ -320,8 +326,8 @@ function AboutEditorial() {
             className="float-right ml-6 mb-4 mt-2 w-[180px] md:w-[220px] relative aspect-[3/4] overflow-hidden hidden md:block"
           >
             <Image
-              src="/Margaret Edmondson/Margaret Bio Photos/Margaret at Outdoor Art Show.jpeg"
-              alt="Margaret Edmondson at an outdoor art show"
+              src="/Margaret Edmondson/Margaret Bio Photos/Margaret Presenting Cactus Painting.jpeg"
+              alt="Margaret Edmondson presenting a cactus painting"
               fill
               className="object-cover"
               sizes="220px"

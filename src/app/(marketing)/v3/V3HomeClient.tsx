@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   motion,
   useScroll,
@@ -340,6 +341,7 @@ const featuredWorks = [
     medium: 'Mixed media on canvas',
     size: 'large',
     rotate: '-1.5deg',
+    href: '/shop/art/seaside-with-seagull',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Cactuses/Pins and Needles.jpg',
@@ -347,6 +349,7 @@ const featuredWorks = [
     medium: 'Collage & acrylic',
     size: 'small',
     rotate: '2deg',
+    href: '/shop/art/pins-and-needles',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Texas Themed/Deep in the Heart of Texas_1.jpg',
@@ -354,6 +357,7 @@ const featuredWorks = [
     medium: 'Found materials on board',
     size: 'medium',
     rotate: '-0.8deg',
+    href: '/shop/texas-themed',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Grow.png',
@@ -361,6 +365,7 @@ const featuredWorks = [
     medium: 'Mixed media collage',
     size: 'medium',
     rotate: '1.5deg',
+    href: '/shop/encouragement-series',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Beach and SC/Magnolia Plantation and Gardens SC.jpg',
@@ -368,6 +373,7 @@ const featuredWorks = [
     medium: 'Oil & collage',
     size: 'small',
     rotate: '-2deg',
+    href: '/shop/beach-and-sc',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/Custom Pet Portrait Example_1.jpg',
@@ -375,6 +381,7 @@ const featuredWorks = [
     medium: 'Custom portrait commission',
     size: 'large',
     rotate: '1deg',
+    href: '/shop/custom-portraits',
   },
 ]
 
@@ -431,50 +438,52 @@ function FeaturedSection() {
                 transition: { duration: 0.4 },
               }}
             >
-              <div className="relative bg-white p-2 md:p-3 shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full">
-                {/* washi tape */}
-                <WashiTape
-                  className="-top-2 left-1/2 -translate-x-1/2"
-                  color={
-                    i % 3 === 0
-                      ? 'bg-coral/50'
-                      : i % 3 === 1
-                      ? 'bg-gold/50'
-                      : 'bg-olive/50'
-                  }
-                />
-
-                <div
-                  className={`relative overflow-hidden ${
-                    work.size === 'large'
-                      ? 'aspect-[4/3]'
-                      : work.size === 'medium'
-                      ? 'aspect-[3/4]'
-                      : 'aspect-square'
-                  }`}
-                >
-                  <Image
-                    src={work.src}
-                    alt={work.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    sizes={
-                      work.size === 'large'
-                        ? '(max-width: 768px) 100vw, 66vw'
-                        : '(max-width: 768px) 50vw, 33vw'
+              <Link href={work.href} className="block h-full">
+                <div className="relative bg-white p-2 md:p-3 shadow-lg hover:shadow-2xl transition-shadow duration-500 h-full">
+                  {/* washi tape */}
+                  <WashiTape
+                    className="-top-2 left-1/2 -translate-x-1/2"
+                    color={
+                      i % 3 === 0
+                        ? 'bg-coral/50'
+                        : i % 3 === 1
+                        ? 'bg-gold/50'
+                        : 'bg-olive/50'
                     }
                   />
-                </div>
 
-                <div className="mt-2 md:mt-3 px-1">
-                  <h3 className="font-serif-display text-base md:text-lg text-charcoal">
-                    {work.title}
-                  </h3>
-                  <p className="font-hand text-sm text-charcoal/60">
-                    {work.medium}
-                  </p>
+                  <div
+                    className={`relative overflow-hidden ${
+                      work.size === 'large'
+                        ? 'aspect-[4/3]'
+                        : work.size === 'medium'
+                        ? 'aspect-[3/4]'
+                        : 'aspect-square'
+                    }`}
+                  >
+                    <Image
+                      src={work.src}
+                      alt={work.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      sizes={
+                        work.size === 'large'
+                          ? '(max-width: 768px) 100vw, 66vw'
+                          : '(max-width: 768px) 50vw, 33vw'
+                      }
+                    />
+                  </div>
+
+                  <div className="mt-2 md:mt-3 px-1">
+                    <h3 className="font-serif-display text-base md:text-lg text-charcoal">
+                      {work.title}
+                    </h3>
+                    <p className="font-hand text-sm text-charcoal/60">
+                      {work.medium}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -516,42 +525,24 @@ function AboutSection() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-          {/* image stack — overlapping */}
+          {/* Margaret photo */}
           <SectionWrapper className="relative h-[400px] md:h-[500px]">
             <motion.div
               variants={fadeRotateIn}
               custom={0}
-              className="absolute top-0 left-0 md:left-4 w-[65%] z-10"
-              style={{ rotate: '-3deg', y: imgY }}
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ rotate: '-2deg', y: imgY }}
             >
-              <StampFrame>
+              <StampFrame className="w-[80%] max-w-[360px]">
                 <Image
-                  src="/Margaret Edmondson/Margaret Bio Photos/Margaret with Solo Award Full Length.jpeg"
-                  alt="Margaret Edmondson with her Solo award at a gallery show"
+                  src="/Margaret Edmondson/Margaret Bio Photos/Margaret Presenting Cactus Painting.jpeg"
+                  alt="Margaret Edmondson presenting her cactus painting"
                   width={400}
                   height={500}
                   className="object-cover w-full h-auto"
                 />
               </StampFrame>
               <WashiTape className="-top-2 left-8" color="bg-gold/60" />
-            </motion.div>
-
-            <motion.div
-              variants={fadeRotateIn}
-              custom={1}
-              className="absolute bottom-0 right-0 md:right-4 w-[55%] z-20"
-              style={{ rotate: '2deg' }}
-            >
-              <div className="bg-white p-2 shadow-xl">
-                <Image
-                  src="/Margaret Edmondson/ARTWORK/Encouragement Series/Encouragement Series Overview_1.jpg"
-                  alt="Encouragement Series overview"
-                  width={350}
-                  height={350}
-                  className="object-cover w-full h-auto"
-                />
-              </div>
-              <WashiTape className="-top-2 right-6" color="bg-coral/60" />
             </motion.div>
 
             {/* decorative scrap */}

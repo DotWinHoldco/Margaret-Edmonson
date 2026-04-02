@@ -1,5 +1,5 @@
 import { getStripe } from '@/lib/stripe'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(
   request: Request,
@@ -8,7 +8,7 @@ export async function POST(
   const { id: courseId } = await props.params
 
   try {
-    const supabase = await createServiceClient()
+    const supabase = await createClient()
 
     // Authenticate user
     const authHeader = request.headers.get('authorization')

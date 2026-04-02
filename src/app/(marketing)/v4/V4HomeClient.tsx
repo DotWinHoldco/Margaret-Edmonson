@@ -72,14 +72,14 @@ function GoldRule({ className = '' }: { className?: string }) {
 
 /* ─── gallery data ─── */
 const galleryWorks = [
-  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air_1.jpg', title: 'Hot Air' },
-  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Dolphin Watch.jpg', title: 'Dolphin Watch' },
-  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Unexpected.jpg', title: 'Unexpected' },
-  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Spring Break Mountain Boat Dock.jpg', title: 'Spring Break Mountain Boat Dock' },
-  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Flower Power_1.jpg', title: 'Flower Power' },
-  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Solo.jpg', title: 'Solo' },
-  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Seaside with Seagull_1.jpg', title: 'Seaside with Seagull' },
-  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Curious Mind.png', title: 'Curious Mind' },
+  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Hot Air_1.jpg', title: 'Hot Air', href: '/shop/art/hot-air' },
+  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Dolphin Watch.jpg', title: 'Dolphin Watch', href: '/shop/art/dolphin-watch' },
+  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Unexpected.jpg', title: 'Unexpected', href: '/shop/encouragement-series' },
+  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Spring Break Mountain Boat Dock.jpg', title: 'Spring Break Mountain Boat Dock', href: '/shop/art/spring-break-mountain-boat-dock' },
+  { src: '/Margaret Edmondson/ARTWORK/Texas Themed/Flower Power_1.jpg', title: 'Flower Power', href: '/shop/art/flower-power' },
+  { src: '/Margaret Edmondson/ARTWORK/Cactuses/Solo.jpg', title: 'Solo', href: '/shop/cactuses' },
+  { src: '/Margaret Edmondson/ARTWORK/Beach and SC/Seaside with Seagull_1.jpg', title: 'Seaside with Seagull', href: '/shop/art/seaside-with-seagull' },
+  { src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Curious Mind.png', title: 'Curious Mind', href: '/shop/encouragement-series' },
 ]
 
 const seriesData = [
@@ -88,24 +88,28 @@ const seriesData = [
     title: 'Texas Collection',
     count: 6,
     tall: true,
+    slug: 'texas-themed',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Beach and SC/Fun at the Beach_1.jpg',
     title: 'Beach & Coastal',
     count: 5,
     tall: false,
+    slug: 'beach-and-sc',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Encouragement Series/Seeds.png',
     title: 'Encouragement Series',
     count: 4,
     tall: false,
+    slug: 'encouragement-series',
   },
   {
     src: '/Margaret Edmondson/ARTWORK/Custom Portrait Options/Family Gift Painting.jpg',
     title: 'Custom Portraits',
     count: 2,
     tall: true,
+    slug: 'custom-portraits',
   },
 ]
 
@@ -233,7 +237,7 @@ function HorizontalGallery() {
 
         <motion.div className="flex gap-8 md:gap-12 pl-20 md:pl-32" style={{ x }}>
           {galleryWorks.map((work, i) => (
-            <div key={work.title} className="flex-shrink-0 flex flex-col items-center">
+            <Link key={work.title} href={work.href} className="flex-shrink-0 flex flex-col items-center">
               <motion.div
                 className="relative h-[60vh] w-[40vh] md:w-[45vh] overflow-hidden rounded-sm"
                 initial={{ opacity: 0, y: 60 }}
@@ -258,7 +262,7 @@ function HorizontalGallery() {
               <span className="mt-4 font-body text-sm tracking-wider text-white/50">
                 {work.title}
               </span>
-            </div>
+            </Link>
           ))}
         </motion.div>
       </div>
@@ -358,35 +362,36 @@ function SeriesShowcase() {
             const fromLeft = i % 2 === 0
 
             return (
-              <motion.div
-                key={series.title}
-                className={`group relative overflow-hidden rounded-sm cursor-pointer ${colSpan} ${heightClass}`}
-                initial={{ opacity: 0, x: fromLeft ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.9, delay: i * 0.1, ease }}
-              >
-                <Image
-                  src={series.src}
-                  alt={series.title}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  sizes="(min-width:768px) 58vw, 100vw"
-                />
-                {/* overlay */}
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
-                {/* gold border glow on hover */}
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold/50 transition-all duration-500 rounded-sm" />
-                {/* text */}
-                <div className="absolute bottom-0 left-0 p-6 md:p-8">
-                  <h3 className="font-editorial text-2xl md:text-3xl text-white">
-                    {series.title}
-                  </h3>
-                  <span className="font-body text-sm text-white/60 tracking-wider">
-                    {series.count} works
-                  </span>
-                </div>
-              </motion.div>
+              <Link key={series.title} href={`/shop/${series.slug}`} className={colSpan}>
+                <motion.div
+                  className={`group relative overflow-hidden rounded-sm cursor-pointer ${heightClass}`}
+                  initial={{ opacity: 0, x: fromLeft ? -60 : 60 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.9, delay: i * 0.1, ease }}
+                >
+                  <Image
+                    src={series.src}
+                    alt={series.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(min-width:768px) 58vw, 100vw"
+                  />
+                  {/* overlay */}
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
+                  {/* gold border glow on hover */}
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold/50 transition-all duration-500 rounded-sm" />
+                  {/* text */}
+                  <div className="absolute bottom-0 left-0 p-6 md:p-8">
+                    <h3 className="font-editorial text-2xl md:text-3xl text-white">
+                      {series.title}
+                    </h3>
+                    <span className="font-body text-sm text-white/60 tracking-wider">
+                      {series.count} works
+                    </span>
+                  </div>
+                </motion.div>
+              </Link>
             )
           })}
         </div>

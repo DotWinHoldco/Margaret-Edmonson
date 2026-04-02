@@ -1,6 +1,25 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest } from 'next/server'
 
+export async function GET() {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('products')
+      .select('id, title, slug, status, is_original, base_price, funnel_eligible, product_images(id, url, alt_text, sort_order, is_primary)')
+      .eq('status', 'active')
+      .order('title', { ascending: true })
+
+    if (error) {
+      return Response.json({ error: error.message }, { status: 500 })
+    }
+    return Response.json({ data: data || [] })
+  } catch (err) {
+    console.error('GET /api/admin/products error:', err)
+    return Response.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()

@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { type NextRequest } from 'next/server'
 
 export async function GET(
@@ -11,7 +11,7 @@ export async function GET(
     return Response.json({ error: 'orderId is required' }, { status: 400 })
   }
 
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   // Fetch order
   const { data: order, error: orderError } = await supabase

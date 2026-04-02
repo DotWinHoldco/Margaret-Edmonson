@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function PATCH(
   request: Request,
@@ -7,7 +7,7 @@ export async function PATCH(
   const { id: lessonId } = await props.params
 
   try {
-    const supabase = await createServiceClient()
+    const supabase = await createClient()
 
     // Authenticate user
     const { data: { user } } = await supabase.auth.getUser()

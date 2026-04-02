@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: Request) {
   const { email, source, first_name } = await request.json()
@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Valid email required' }, { status: 400 })
   }
 
-  const supabase = await createServiceClient()
+  const supabase = await createClient()
 
   const { error } = await supabase
     .from('newsletter_subscribers')

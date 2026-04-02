@@ -3,11 +3,20 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+interface ProductImage {
+  id: string
+  url: string
+  alt_text: string | null
+  sort_order: number
+  is_primary: boolean
+}
+
 interface Product {
   id: string
   title: string
   slug: string
   funnel_eligible?: boolean | null
+  product_images?: ProductImage[]
 }
 
 interface FunnelFormData {
@@ -111,13 +120,16 @@ export default function FunnelForm({ initialData, mode }: FunnelFormProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [imageSlots, setImageSlots] = useState<{ hero: string; detail: string; story: string }>({
+    hero: '', detail: '', story: ''
+  })
 
   const [form, setForm] = useState<FunnelFormData>(
     initialData || {
       product_id: '',
       template: 'gallery_spotlight',
       slug: '',
-      is_published: false,
+      is_published: true,
       seo_title: '',
       seo_description: '',
       og_image_url: '',
@@ -152,6 +164,8 @@ export default function FunnelForm({ initialData, mode }: FunnelFormProps) {
               title: p.title as string,
               slug: p.slug as string,
               funnel_eligible: p.funnel_eligible as boolean | null,
+              product_images: ((p.product_images as ProductImage[]) || [])
+                .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)),
             }))
         )
       })
@@ -167,6 +181,28 @@ export default function FunnelForm({ initialData, mode }: FunnelFormProps) {
     const product = products.find((p) => p.id === productId)
     if (product && !form.slug) {
       updateField('slug', generateSlug(product.title))
+    }
+    // Auto-assign images to slots
+    if (product?.product_images && product.product_images.length > 0) {
+      const imgs = product.product_images
+      if (imgs.length === 1) {
+        setImageSlots({ hero: imgs[0].url, detail: imgs[0].url, story: imgs[0].url })
+      } else {
+        const primary = imgs.find((i) => i.is_primary) || imgs[0]
+        const rest = imgs.filter((i) => i.url !== primary.url)
+        setImageSlots({
+          hero: primary.url,
+          detail: rest[0]?.url || primary.url,
+          story: rest[1]?.url || rest[0]?.url || primary.url,
+        })
+      }
+      // Set OG image to hero
+      const heroImg = (imgs.find((i) => i.is_primary) || imgs[0]).url
+      if (!form.og_image_url) {
+        updateField('og_image_url', heroImg)
+      }
+    } else {
+      setImageSlots({ hero: '', detail: '', story: '' })
     }
   }
 
@@ -262,6 +298,60 @@ export default function FunnelForm({ initialData, mode }: FunnelFormProps) {
             </button>
           ))}
         </div>
+      </section>
+
+      {/* Image Slots */}
+      <section className="mb-10">
+        <h2 className="font-display text-lg font-semibold text-charcoal mb-4">Image Slots</h2>
+        <p className="font-body text-xs text-charcoal/50 mb-4">
+          Preview how product images map to template slots. Hero = main image, Detail = secondary, Story = tertiary. Reorder images on the product edit page to change assignments.
+        </p>
+        {(() => {
+          const selectedProduct = products.find((p) => p.id === form.product_id)
+          if (!selectedProduct) {
+            return (
+              <p className="font-body text-sm text-charcoal/40 italic">Select a product first</p>
+            )
+          }
+          const imgs = selectedProduct.product_images || []
+          if (imgs.length === 0) {
+            return (
+              <p className="font-body text-sm text-charcoal/40 italic">This product has no images</p>
+            )
+          }
+          return (
+            <div className="space-y-4">
+              {(['hero', 'detail', 'story'] as const).map((slot) => (
+                <div key={slot}>
+                  <label className="block font-body text-sm text-charcoal/60 mb-2 capitalize">
+                    {slot === 'hero' ? 'Hero Image' : slot === 'detail' ? 'Detail Image' : 'Story Image'}
+                  </label>
+                  <div className="flex gap-2 flex-wrap">
+                    {imgs.map((img) => (
+                      <button
+                        key={img.id}
+                        type="button"
+                        onClick={() => setImageSlots((prev) => ({ ...prev, [slot]: img.url }))}
+                        className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                          imageSlots[slot] === img.url
+                            ? 'border-teal ring-2 ring-teal/30'
+                            : 'border-charcoal/10 hover:border-charcoal/25'
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={img.url}
+                          alt={img.alt_text || 'Product image'}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        })()}
       </section>
 
       {/* Slug & SEO */}
