@@ -1,6 +1,8 @@
 'use client'
 
 import { Playfair_Display, DM_Sans, Caveat } from 'next/font/google'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], style: ['normal', 'italic'], variable: '--font-playfair' })
@@ -8,6 +10,27 @@ const dmSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700'
 const caveat = Caveat({ subsets: ['latin'], weight: ['500', '600'], variable: '--font-caveat-welcome' })
 
 export default function WelcomeClient() {
+  const router = useRouter()
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    // If user already dismissed the welcome letter permanently, skip straight to dashboard
+    if (localStorage.getItem('artbyme_welcome_dismissed')) {
+      router.replace('/admin')
+      return
+    }
+    setReady(true)
+  }, [router])
+
+  function enterDashboard(dismissPermanently: boolean) {
+    if (dismissPermanently) {
+      localStorage.setItem('artbyme_welcome_dismissed', '1')
+    }
+    router.push('/admin?tutorial=1')
+  }
+
+  if (!ready) return null
+
   return (
     <div className={`${playfair.variable} ${dmSans.variable} ${caveat.variable}`}>
       <style jsx global>{`
@@ -131,17 +154,6 @@ export default function WelcomeClient() {
       `}</style>
 
       <div className="welcome-page">
-        {/* ── Navigation ── */}
-        <nav className="w-nav">
-          <Link href="/welcome" className="w-nav-brand">
-            ArtByME <span>artOS</span>
-          </Link>
-          <div className="w-nav-links">
-            <Link href="/" className="w-nav-link">View Site</Link>
-            <Link href="/admin" className="w-nav-link primary">Open Dashboard</Link>
-          </div>
-        </nav>
-
         <div className="welcome-note">
 
           {/* ═══ HEADER ═══ */}
@@ -373,6 +385,27 @@ export default function WelcomeClient() {
           <div className="w-sign-off">
             <p>This platform was designed around how you work — your art, your process, your business. Let&apos;s make it perfect.</p>
             <p className="names">— Skylar &amp; Shelby <span className="heart">&#9829;</span></p>
+          </div>
+
+          {/* ═══ ENTRY BUTTONS ═══ */}
+          <div style={{ textAlign: 'center', marginTop: 48, paddingBottom: 8 }}>
+            <button
+              onClick={() => enterDashboard(false)}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: '#C4724E', color: 'white', padding: '16px 40px', borderRadius: 12, fontSize: 16, fontWeight: 600, border: 'none', cursor: 'pointer', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', boxShadow: '0 8px 24px rgba(196,114,78,0.25)', transition: 'background 0.15s' }}
+            >
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+              Enter Your Dashboard
+            </button>
+            <div style={{ marginTop: 16 }}>
+              <button
+                onClick={() => enterDashboard(true)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-dm-sans), DM Sans, sans-serif', fontSize: 13, color: '#8A857D', textDecoration: 'underline', textUnderlineOffset: 3, padding: 8 }}
+              >
+                Enter Dashboard &amp; don&apos;t show this letter again
+              </button>
+            </div>
           </div>
 
         </div>
