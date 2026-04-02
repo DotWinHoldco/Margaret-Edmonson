@@ -25,6 +25,13 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // Redirect ?code= on root to /auth/callback for magic link handling
+  if (request.nextUrl.pathname === '/' && request.nextUrl.searchParams.get('code')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/callback'
+    return NextResponse.redirect(url)
+  }
+
   const {
     data: { user },
   } = await supabase.auth.getUser()

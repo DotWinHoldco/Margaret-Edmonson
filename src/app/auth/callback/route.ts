@@ -5,7 +5,7 @@ import { cookies } from 'next/headers'
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const redirect = searchParams.get('redirect') || '/'
+  const redirect = searchParams.get('redirect') || null
 
   if (code) {
     const cookieStore = await cookies()
@@ -38,9 +38,24 @@ export async function GET(request: Request) {
           full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
           avatar_url: user.user_metadata?.avatar_url || null,
         }, { onConflict: 'id' })
+
+        // Check if admin — route to admin dashboard
+        if (redirect) {
+          return NextResponse.redirect(`${origin}${redirect}`)
+        }
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+
+        if (profile?.role === 'admin' || profile?.role === 'artist') {
+          return NextResponse.redirect(`${origin}/admin`)
+        }
       }
 
-      return NextResponse.redirect(`${origin}${redirect}`)
+      return NextResponse.redirect(`${origin}/account`)
     }
   }
 
