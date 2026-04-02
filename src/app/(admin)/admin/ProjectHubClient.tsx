@@ -526,6 +526,14 @@ export default function ProjectHubClient({
 
   const feedbackRef = useRef<HTMLDivElement>(null)
 
+  // Tutorial
+  const [tutorialStep, setTutorialStep] = useState<number | null>(null)
+  useEffect(() => {
+    if (!localStorage.getItem('artbyme_tutorial_seen')) {
+      setTutorialStep(0)
+    }
+  }, [])
+
   // ── Fetch comments ──────────────────────────────────────────────────
   async function fetchComments(
     type: 'feedback' | 'work-requests' | 'notes',
@@ -801,9 +809,113 @@ export default function ProjectHubClient({
     }
   }, [expandedNote]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const TUTORIAL_STEPS = [
+    {
+      title: 'Welcome to Your Dashboard!',
+      emoji: '👋',
+      body: "This is your ArtByME command center. Let's take a quick look at the most important things to explore first.",
+      cta: "Let's go",
+    },
+    {
+      title: '6 Homepage Designs',
+      emoji: '🏠',
+      body: 'Scroll down to the "Homepage Designs" section. You\'ll see six unique homepage variants — click "View Live" on each one to see it in action. Take your time with each design and think about which direction feels most like you.',
+      cta: 'Got it',
+    },
+    {
+      title: 'Your Artwork Funnels',
+      emoji: '🎨',
+      body: 'Below the homepage designs, you\'ll find your Artwork Funnels. Each funnel is a dedicated, story-driven sales page built around one piece of your art. There are 3 template styles — Gallery Spotlight, Intimate Journal, and Bold Showcase — and each piece of art is matched to the template that fits it best. Click any funnel to see it live!',
+      cta: 'Next',
+    },
+    {
+      title: 'Share Your Feedback',
+      emoji: '💬',
+      body: 'At the bottom of this dashboard, you\'ll find the Feedback section. After you\'ve explored the homepage designs and funnels, use this section to tell us what you love, what you\'d change, and which direction speaks to you. We\'ll take it from there!',
+      cta: 'Start exploring',
+    },
+  ]
+
+  function dismissTutorial() {
+    localStorage.setItem('artbyme_tutorial_seen', '1')
+    setTutorialStep(null)
+  }
+
   // ── Render ──────────────────────────────────────────────────────────
   return (
     <div className="max-w-6xl mx-auto">
+      {/* ── Tutorial Modal ─────────────────────────────────────────── */}
+      <AnimatePresence>
+        {tutorialStep !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            style={{ background: 'rgba(44,44,44,0.55)', backdropFilter: 'blur(6px)' }}
+            onClick={(e) => { if (e.target === e.currentTarget) dismissTutorial() }}
+          >
+            <motion.div
+              key={tutorialStep}
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -12 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="bg-cream rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+            >
+              {/* Progress bar */}
+              <div className="flex gap-1.5 px-6 pt-5">
+                {TUTORIAL_STEPS.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+                      i <= tutorialStep! ? 'bg-teal' : 'bg-charcoal/10'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <div className="px-6 pt-5 pb-6">
+                <div className="text-4xl mb-3">{TUTORIAL_STEPS[tutorialStep!].emoji}</div>
+                <h3 className="font-display text-xl font-semibold text-charcoal mb-2">
+                  {TUTORIAL_STEPS[tutorialStep!].title}
+                </h3>
+                <p className="font-body text-sm text-charcoal/60 leading-relaxed mb-6">
+                  {TUTORIAL_STEPS[tutorialStep!].body}
+                </p>
+
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={dismissTutorial}
+                    className="font-body text-xs text-charcoal/30 hover:text-charcoal/50 transition-colors"
+                  >
+                    Skip tutorial
+                  </button>
+                  <div className="flex items-center gap-3">
+                    <span className="font-body text-xs text-charcoal/30">
+                      {tutorialStep! + 1} / {TUTORIAL_STEPS.length}
+                    </span>
+                    <button
+                      onClick={() => {
+                        if (tutorialStep! < TUTORIAL_STEPS.length - 1) {
+                          setTutorialStep(tutorialStep! + 1)
+                        } else {
+                          dismissTutorial()
+                        }
+                      }}
+                      className="rounded-lg bg-teal px-5 py-2.5 font-body text-sm font-medium text-white hover:bg-deep-teal transition-colors"
+                    >
+                      {TUTORIAL_STEPS[tutorialStep!].cta}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Section 1: Welcome Header ──────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
