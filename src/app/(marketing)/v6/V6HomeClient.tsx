@@ -504,19 +504,8 @@ const collections = [
 ]
 
 function CollectionsSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [dragConstraint, setDragConstraint] = useState(0)
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const scrollW = containerRef.current.scrollWidth
-      const clientW = containerRef.current.clientWidth
-      setDragConstraint(-(scrollW - clientW + 32))
-    }
-  }, [])
-
   return (
-    <Section className="py-20 md:py-28 bg-cream overflow-hidden">
+    <Section className="py-20 md:py-28 bg-cream">
       <div className="max-w-7xl mx-auto px-6">
         <motion.h2
           className="font-hand text-5xl md:text-6xl text-charcoal text-center mb-12"
@@ -526,18 +515,14 @@ function CollectionsSection() {
         </motion.h2>
       </div>
 
-      <motion.div
-        ref={containerRef}
-        className="flex gap-6 px-6 md:px-12 cursor-grab active:cursor-grabbing overflow-x-auto"
+      <div
+        className="flex gap-6 px-6 md:px-12 overflow-x-auto pb-4"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-        drag="x"
-        dragConstraints={{ left: dragConstraint, right: 0 }}
-        dragElastic={0.1}
       >
         {collections.map((col, i) => (
           <motion.div
             key={col.name}
-            className="flex-shrink-0 w-72 md:w-80"
+            className="flex-shrink-0 w-64 sm:w-72 md:w-80"
             variants={springIn}
             custom={i}
             whileHover={{ scale: 1.04 }}
@@ -546,7 +531,7 @@ function CollectionsSection() {
           >
             <Link href={`/shop/${col.slug}`}>
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
-                <div className="relative h-64 md:h-72 overflow-hidden">
+                <div className="relative h-56 sm:h-64 md:h-72 overflow-hidden">
                   <Image
                     src={col.src}
                     alt={col.name}
@@ -567,7 +552,9 @@ function CollectionsSection() {
             </Link>
           </motion.div>
         ))}
-      </motion.div>
+        {/* Spacer for last card visibility */}
+        <div className="flex-shrink-0 w-6 md:w-12" />
+      </div>
     </Section>
   )
 }

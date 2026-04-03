@@ -115,7 +115,7 @@ function HeroMasthead() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24 overflow-hidden"
     >
       <div ref={ref as React.RefObject<HTMLDivElement>}>
         <motion.div
@@ -127,7 +127,7 @@ function HeroMasthead() {
           <motion.h1
             variants={fadeUp}
             custom={0}
-            className="font-editorial font-black text-[14vw] md:text-[12vw] leading-[0.85] tracking-tight text-charcoal relative z-10"
+            className="font-editorial font-black text-[13vw] sm:text-[14vw] md:text-[12vw] leading-[0.85] tracking-tight text-charcoal relative z-10"
           >
             MARGARET
           </motion.h1>
@@ -136,7 +136,7 @@ function HeroMasthead() {
           <motion.div
             variants={clipReveal}
             custom={0.5}
-            className="relative w-full h-[28vh] md:h-[32vh] my-2 md:my-3 overflow-hidden"
+            className="relative w-full h-[20vh] sm:h-[28vh] md:h-[32vh] my-2 md:my-3 overflow-hidden"
           >
             <motion.div
               style={{ y: imgY }}
@@ -157,7 +157,7 @@ function HeroMasthead() {
           <motion.h1
             variants={fadeUp}
             custom={1}
-            className="font-editorial font-black text-[14vw] md:text-[12vw] leading-[0.85] tracking-tight text-charcoal relative z-10"
+            className="font-editorial font-black text-[13vw] sm:text-[14vw] md:text-[12vw] leading-[0.85] tracking-tight text-charcoal relative z-10"
           >
             EDMONDSON
           </motion.h1>
