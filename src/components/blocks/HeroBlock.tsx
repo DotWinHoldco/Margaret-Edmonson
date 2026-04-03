@@ -61,7 +61,9 @@ export default function HeroBlock({ config, variant }: { config: Record<string, 
             transition={{ duration: 1.5, ease: 'easeOut' }}
           >
             <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light text-white tracking-tight">
-              {heading}
+              {heading.includes('Margaret Edmondson')
+                ? <>{heading.replace('Margaret Edmondson', '')}<span className="whitespace-nowrap">Margaret Edmondson</span></>
+                : heading}
             </h1>
           </motion.div>
           <motion.p
@@ -80,13 +82,13 @@ export default function HeroBlock({ config, variant }: { config: Record<string, 
           >
             <Link
               href={ctaLink}
-              className="inline-flex items-center justify-center px-8 py-3 border border-white text-white font-body text-sm font-medium tracking-wider uppercase hover:bg-white hover:text-charcoal transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-body text-sm font-medium tracking-wider uppercase hover:bg-white hover:text-charcoal transition-all duration-300"
             >
               {ctaText}
             </Link>
             <Link
               href={cta2Link}
-              className="inline-flex items-center justify-center px-8 py-3 border border-white/50 text-white/80 font-body text-sm font-medium tracking-wider uppercase hover:border-gold hover:text-gold transition-all duration-300"
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-body text-sm font-medium tracking-wider uppercase hover:bg-gold hover:border-gold hover:text-charcoal transition-all duration-300"
             >
               {cta2Text}
             </Link>

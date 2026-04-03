@@ -173,7 +173,7 @@ function Hero() {
         </h1>
 
         <motion.p
-          className="mt-4 font-body text-lg md:text-xl tracking-[0.25em] uppercase text-gold"
+          className="mt-4 font-body text-lg md:text-xl tracking-[0.25em] uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 1.8, ease }}
@@ -189,11 +189,11 @@ function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 2.4, duration: 1 }}
       >
-        <span className="font-body text-xs tracking-widest uppercase text-white/40">
+        <span className="font-body text-xs tracking-widest uppercase text-white/80">
           Scroll
         </span>
         <motion.span
-          className="block w-px h-10 bg-gold/70"
+          className="block w-px h-10 bg-white/70"
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           transition={{

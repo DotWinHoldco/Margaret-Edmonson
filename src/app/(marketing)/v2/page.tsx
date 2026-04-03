@@ -685,7 +685,7 @@ function CommissionSection() {
                 <h3 className="font-editorial mt-2 text-lg font-bold text-white">
                   {item.title}
                 </h3>
-                <p className="font-friendly mt-2 text-sm leading-relaxed text-white/40">
+                <p className="font-friendly mt-2 text-sm leading-relaxed text-white/70">
                   {item.desc}
                 </p>
               </div>

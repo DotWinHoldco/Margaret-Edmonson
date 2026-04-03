@@ -21,7 +21,7 @@ const FOOTER_LINKS = {
   Legal: [
     { href: '/shipping-policy', label: 'Shipping Policy' },
     { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms of Service' },
+    { href: '/tos', label: 'Terms of Service' },
   ],
 }
 

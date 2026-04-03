@@ -1233,7 +1233,7 @@ export default function ProjectHubClient({
         {/* Stats strip */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-6 px-4 py-3 bg-charcoal/[0.03] rounded-lg border border-charcoal/6">
           {[
-            { value: '25', label: 'Public Pages' },
+            { value: '28', label: 'Public Pages' },
             { value: '27', label: 'Admin Pages' },
             { value: '15', label: 'Sales Funnels' },
             { value: '45', label: 'API Routes' },

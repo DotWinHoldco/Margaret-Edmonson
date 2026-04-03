@@ -712,7 +712,7 @@ function CommissionSection() {
           </a>
           <a
             href="/commissions"
-            className="inline-block px-10 py-4 border-2 border-white/30 text-white font-serif-display text-lg tracking-wide hover:border-gold hover:text-gold transition-colors duration-300"
+            className="inline-block px-10 py-4 border-2 border-white text-white font-serif-display text-lg tracking-wide hover:bg-gold hover:border-gold hover:text-charcoal transition-colors duration-300"
           >
             View Past Work
           </a>
