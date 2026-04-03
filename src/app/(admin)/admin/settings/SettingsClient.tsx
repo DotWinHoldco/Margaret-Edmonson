@@ -1,6 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { createBrowserClient } from '@supabase/ssr'
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 /* ─── Types ─── */
 
@@ -27,10 +33,250 @@ interface PromoCode {
 export default function SettingsClient() {
   return (
     <div className="space-y-8">
+      <AccountSection />
       <SiteSettingsSection />
       <IntegrationStatusSection />
       <PromoCodesSection />
       <DangerZoneSection />
+    </div>
+  )
+}
+
+/* ─── Account Settings ─── */
+
+function AccountSection() {
+  const [loading, setLoading] = useState(true)
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+
+  // Profile save
+  const [savingProfile, setSavingProfile] = useState(false)
+  const [profileMsg, setProfileMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  // Email change
+  const [newEmail, setNewEmail] = useState('')
+  const [savingEmail, setSavingEmail] = useState(false)
+  const [emailMsg, setEmailMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  // Password change
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [savingPassword, setSavingPassword] = useState(false)
+  const [passwordMsg, setPasswordMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  useEffect(() => {
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setEmail(user.email || '')
+        setPhone(user.user_metadata?.phone || '')
+        setFullName(user.user_metadata?.full_name || '')
+      }
+      setLoading(false)
+    }
+    load()
+  }, [])
+
+  async function handleSaveProfile() {
+    setSavingProfile(true)
+    setProfileMsg(null)
+    const { error } = await supabase.auth.updateUser({
+      data: { full_name: fullName, phone },
+    })
+    // Also update the profiles table
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      await supabase.from('profiles').update({
+        full_name: fullName,
+        phone: phone || null,
+      }).eq('id', user.id)
+    }
+    setSavingProfile(false)
+    if (error) {
+      setProfileMsg({ type: 'error', text: error.message })
+    } else {
+      setProfileMsg({ type: 'success', text: 'Profile updated.' })
+      setTimeout(() => setProfileMsg(null), 3000)
+    }
+  }
+
+  async function handleChangeEmail() {
+    if (!newEmail.trim()) return
+    setSavingEmail(true)
+    setEmailMsg(null)
+    const { error } = await supabase.auth.updateUser({ email: newEmail.trim() })
+    setSavingEmail(false)
+    if (error) {
+      setEmailMsg({ type: 'error', text: error.message })
+    } else {
+      setEmailMsg({ type: 'success', text: 'Verification email sent to your new address. Check your inbox to confirm the change.' })
+      setNewEmail('')
+    }
+  }
+
+  async function handleChangePassword() {
+    if (!newPassword || !confirmPassword) return
+    if (newPassword !== confirmPassword) {
+      setPasswordMsg({ type: 'error', text: 'Passwords do not match.' })
+      return
+    }
+    if (newPassword.length < 8) {
+      setPasswordMsg({ type: 'error', text: 'Password must be at least 8 characters.' })
+      return
+    }
+    setSavingPassword(true)
+    setPasswordMsg(null)
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    setSavingPassword(false)
+    if (error) {
+      setPasswordMsg({ type: 'error', text: error.message })
+    } else {
+      setPasswordMsg({ type: 'success', text: 'Password updated successfully.' })
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+      setTimeout(() => setPasswordMsg(null), 3000)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="rounded-sm border border-charcoal/10 bg-white p-6 shadow-sm">
+        <p className="font-body text-sm text-charcoal/40">Loading account...</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-sm border border-charcoal/10 bg-white p-6 shadow-sm">
+      <h2 className="font-display text-xl font-semibold text-charcoal mb-5">
+        Account
+      </h2>
+
+      {/* Profile Info */}
+      <div className="space-y-4 mb-8">
+        <h3 className="font-body text-sm font-semibold text-charcoal/70 uppercase tracking-wider">Profile</h3>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label className="block font-body text-sm font-medium text-charcoal mb-1.5">Full Name</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Your full name"
+              className="w-full rounded-sm border border-charcoal/15 bg-cream px-3 py-2 font-body text-sm text-charcoal placeholder:text-charcoal/30 focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal"
+            />
+          </div>
+          <div>
+            <label className="block font-body text-sm font-medium text-charcoal mb-1.5">Phone (optional)</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="(555) 123-4567"
+              className="w-full rounded-sm border border-charcoal/15 bg-cream px-3 py-2 font-body text-sm text-charcoal placeholder:text-charcoal/30 focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block font-body text-sm font-medium text-charcoal mb-1.5">Current Email</label>
+          <input
+            type="email"
+            value={email}
+            disabled
+            className="w-full rounded-sm border border-charcoal/10 bg-charcoal/[0.03] px-3 py-2 font-body text-sm text-charcoal/60"
+          />
+          <p className="mt-1 font-body text-xs text-charcoal/30">To change your email, use the section below.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleSaveProfile}
+            disabled={savingProfile}
+            className="rounded-sm bg-teal px-5 py-2 font-body text-sm font-medium text-cream transition-colors hover:bg-deep-teal disabled:opacity-50"
+          >
+            {savingProfile ? 'Saving...' : 'Save Profile'}
+          </button>
+          {profileMsg && (
+            <span className={`font-body text-sm ${profileMsg.type === 'success' ? 'text-teal' : 'text-coral'}`}>
+              {profileMsg.text}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Change Email */}
+      <div className="space-y-4 mb-8 pt-6 border-t border-charcoal/8">
+        <h3 className="font-body text-sm font-semibold text-charcoal/70 uppercase tracking-wider">Change Email</h3>
+        <p className="font-body text-xs text-charcoal/40">
+          A verification email will be sent to your new address. The change won&apos;t take effect until you confirm it.
+        </p>
+        <div className="max-w-md">
+          <input
+            type="email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+            placeholder="New email address"
+            className="w-full rounded-sm border border-charcoal/15 bg-cream px-3 py-2 font-body text-sm text-charcoal placeholder:text-charcoal/30 focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal"
+          />
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleChangeEmail}
+            disabled={savingEmail || !newEmail.trim()}
+            className="rounded-sm bg-teal px-5 py-2 font-body text-sm font-medium text-cream transition-colors hover:bg-deep-teal disabled:opacity-50"
+          >
+            {savingEmail ? 'Sending...' : 'Send Verification Email'}
+          </button>
+          {emailMsg && (
+            <span className={`font-body text-sm ${emailMsg.type === 'success' ? 'text-teal' : 'text-coral'}`}>
+              {emailMsg.text}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Change Password */}
+      <div className="space-y-4 pt-6 border-t border-charcoal/8">
+        <h3 className="font-body text-sm font-semibold text-charcoal/70 uppercase tracking-wider">Change Password</h3>
+        <div className="max-w-md space-y-3">
+          <div>
+            <label className="block font-body text-sm font-medium text-charcoal mb-1.5">New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Min 8 characters"
+              className="w-full rounded-sm border border-charcoal/15 bg-cream px-3 py-2 font-body text-sm text-charcoal placeholder:text-charcoal/30 focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal"
+            />
+          </div>
+          <div>
+            <label className="block font-body text-sm font-medium text-charcoal mb-1.5">Confirm New Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Re-enter new password"
+              className="w-full rounded-sm border border-charcoal/15 bg-cream px-3 py-2 font-body text-sm text-charcoal placeholder:text-charcoal/30 focus:border-teal focus:outline-none focus:ring-1 focus:ring-teal"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleChangePassword}
+            disabled={savingPassword || !newPassword || !confirmPassword}
+            className="rounded-sm bg-teal px-5 py-2 font-body text-sm font-medium text-cream transition-colors hover:bg-deep-teal disabled:opacity-50"
+          >
+            {savingPassword ? 'Updating...' : 'Update Password'}
+          </button>
+          {passwordMsg && (
+            <span className={`font-body text-sm ${passwordMsg.type === 'success' ? 'text-teal' : 'text-coral'}`}>
+              {passwordMsg.text}
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
