@@ -260,7 +260,7 @@ function HeroSection() {
 
       <div className="relative z-10 text-center max-w-5xl mx-auto">
         <motion.h1
-          className="font-hand text-7xl md:text-8xl lg:text-9xl text-charcoal leading-none"
+          className="font-hand text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-charcoal leading-none"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease }}

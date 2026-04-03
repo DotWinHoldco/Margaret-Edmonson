@@ -60,7 +60,7 @@ export default function HeroBlock({ config, variant }: { config: Record<string, 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
           >
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light text-white tracking-tight">
+            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light text-white tracking-tight">
               {heading.includes('Margaret Edmondson')
                 ? <>{heading.replace('Margaret Edmondson', '')}<span className="whitespace-nowrap">Margaret Edmondson</span></>
                 : heading}

@@ -134,7 +134,7 @@ function Hero() {
 
       {/* artwork with spotlight */}
       <motion.div
-        className="relative w-[55vw] max-w-2xl aspect-[3/4]"
+        className="relative w-[75vw] sm:w-[55vw] max-w-2xl aspect-[3/4]"
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 2, ease }}
@@ -158,7 +158,7 @@ function Hero() {
 
       {/* text overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-28 pointer-events-none">
-        <h1 className="font-editorial text-5xl md:text-7xl lg:text-8xl text-white tracking-tight overflow-hidden">
+        <h1 className="font-editorial text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-white tracking-tight overflow-hidden whitespace-nowrap">
           {heading.split('').map((ch, i) => (
             <motion.span
               key={i}
@@ -173,7 +173,7 @@ function Hero() {
         </h1>
 
         <motion.p
-          className="mt-4 font-body text-lg md:text-xl tracking-[0.25em] uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          className="mt-4 font-body text-sm sm:text-lg md:text-xl tracking-[0.25em] uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 1.8, ease }}
