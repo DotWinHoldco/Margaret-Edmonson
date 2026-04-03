@@ -66,7 +66,19 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "ArtByMe",
+    siteName: "ArtByME",
+    images: [
+      {
+        url: "/ME-Share-Image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ArtByME — Mixed Media & Fine Art by Margaret Edmondson",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ME-Share-Image.jpg"],
   },
   robots: {
     index: true,
